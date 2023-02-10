@@ -1,6 +1,6 @@
 {
   "orgName": "CSU-Online-Credit - Release Test Org",
-  "edition": "Developer",
+  "sourceOrg": "00D6g000002hydVEAQ",
   "features": [
     "PersonAccounts",
     "RecordTypes"
