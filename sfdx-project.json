@@ -1,1 +1,22 @@
-{"packageDirectories": [{"path": "force-app", "default": true}], "namespace": null, "sourceApiVersion": "55.0"}
+{
+    "packageDirectories": [
+      {
+        "package": "OEE-CSU-Online",
+        "versionNumber": "0.0.1.NEXT",
+        "path": "force-app",
+        "definitionFile": "orgs/release.json",
+        "default": true,
+        "dependencies": [
+          {
+            "package": "04t1R0000016bHcQAI"
+          },
+          {
+            "package": "04t5b000002BQdcAAG"
+          }
+        ]
+      }
+    ],
+    "name": "OEE-CSU-Online",
+    "namespace": "csuoee",
+    "sourceApiVersion": "55.0"
+  }

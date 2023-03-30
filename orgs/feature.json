@@ -20,5 +20,10 @@
     "languageSettings": {
       "enableTranslationWorkbench": true
     }
+  },
+  "objectSettings": {
+    "account": {
+      "defaultRecordType": "Administrative"
+    }
   }
 }
