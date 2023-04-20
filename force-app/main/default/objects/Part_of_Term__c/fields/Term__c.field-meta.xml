@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Term__c</fullName>
+    <description>The term that the entity is a part of.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The term that the entity is a part of.</inlineHelpText>
+    <label>Term</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>Credit Term doesn&apos;t exist.</errorMessage>
+        <filterItems>
+            <field>hed__Term__c.RecordType.DeveloperName</field>
+            <operation>equals</operation>
+            <value>Credit</value>
+        </filterItems>
+        <infoMessage>Parts of Term only apply to credit  terms.</infoMessage>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>hed__Term__c</referenceTo>
+    <relationshipLabel>Parts of Term</relationshipLabel>
+    <relationshipName>Parts_of_Term</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>
