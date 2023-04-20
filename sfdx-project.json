@@ -4,7 +4,7 @@
         "package": "OEE-CSU-Online",
         "versionNumber": "0.0.1.NEXT",
         "path": "force-app",
-        "definitionFile": "orgs/release.json",
+        "definitionFile": "orgs/dev.json",
         "default": true,
         "dependencies": [
           {
@@ -21,5 +21,8 @@
     ],
     "name": "OEE-CSU-Online",
     "namespace": "csuoee",
-    "sourceApiVersion": "55.0"
+    "sourceApiVersion": "55.0",
+    "packageAliases": {
+      "OEE-CSU-Online": "0Ho5b000000oLmpCAE"
+    }
   }
