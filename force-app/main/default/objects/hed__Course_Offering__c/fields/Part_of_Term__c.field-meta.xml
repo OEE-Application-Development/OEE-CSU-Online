@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Part_of_Term__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Part of term for the section; helps determine scheduling.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Part of Term should be ignored for most users; it helps fill the Drop &amp; Withdrawal dates.</inlineHelpText>
+    <label>Part of Term</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>Offering must be in the same term as the Part of Term.</errorMessage>
+        <filterItems>
+            <field>Part_of_Term__c.Term__c</field>
+            <operation>equals</operation>
+            <value>Course Offering: Term</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Part_of_Term__c</referenceTo>
+    <relationshipLabel>Course Offerings</relationshipLabel>
+    <relationshipName>Course_Offerings</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>
