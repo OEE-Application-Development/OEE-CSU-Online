@@ -1,12 +1,13 @@
 minimum_cumulusci_version: '3.72.0'
 project:
-    name: CSUOnlineCredit
+    name: CSU-Online-Credit
     package:
         name: CSU-Online-Credit
         api_version: '55.0'
+        namespace: csuoee
     dependencies:
         - github: 'https://github.com/SalesforceFoundation/EDA'
-        - github: 'https://github.com/OEE-Application-Development/EDA-External-Integration'
+        - github: 'https://github.com/OEE-Application-Development/OEE-EDA-Base-Unlocked'
     git:
         default_branch: 'main'
     source_format: sfdx
@@ -14,15 +15,20 @@ project:
 tasks:
     robot:
         options:
-            suites: robot/CSUOnlineCredit/tests
+            suites: robot/CSU-Online-Credit/tests
             options:
-                outputdir: robot/CSUOnlineCredit/results
+                outputdir: robot/CSU-Online-Credit/results
 
     robot_testdoc:
         options:
-            path: robot/CSUOnlineCredit/tests
-            output: robot/CSUOnlineCredit/doc/CSUOnlineCredit_tests.html
+            path: robot/CSU-Online-Credit/tests
+            output: robot/CSU-Online-Credit/doc/CSU-Online-Credit_tests.html
 
     run_tests:
         options:
             required_org_code_coverage_percent: 75
+
+orgs:
+    scratch:
+        build:
+            config_file: orgs/build.json

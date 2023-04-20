@@ -1,10 +1,6 @@
 {
   "orgName": "CSU-Online-Credit - Release Test Org",
   "sourceOrg": "00D6g000002hydVEAQ",
-  "features": [
-    "PersonAccounts",
-    "RecordTypes"
-  ],
   "settings": {
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true
