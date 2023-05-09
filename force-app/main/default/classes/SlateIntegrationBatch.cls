@@ -1,11 +1,37 @@
 global class SlateIntegrationBatch implements Database.Batchable<Object>, Database.AllowsCallouts, Schedulable {
+
+    
     global void execute(SchedulableContext ctx){
-        SlateIntegrationBatch updateDonationsBatch = new SlateIntegrationBatch();
+        List<hed__Term__c> termList = new List<hed__Term__c>([SELECT Id, Name FROM hed__Term__c WHERE RecordType.Name = 'Credit']);
+
+
+        SlateIntegrationBatch updateDonationsBatch = new SlateIntegrationBatch(termList);
         Database.executebatch(updateDonationsBatch, 200);
     }
+    // Set Term lookup
+
+    public List<hed__term__c> termIterable;
+
+    public SlateIntegrationBatch(List<hed__term__c> termIterable) {
+        this.termIterable = termIterable;
+    }
+
+    public static Id termHandler (String slateTermTxt, List<hed__Term__c> terms) {
+        Id returnTermId;
+        for (hed__Term__c trow: terms) {
+            if(trow.Name == slateTermTxt) {
+                returnTermId = trow.Id;
+                return returnTermId;
+            }
+        }
+
+        return returnTermId;
+    }
+
+
     global Iterable<Object> start(Database.BatchableContext bc) {
         List<object> objList = new List<Object>();
-        List<String> listRows = new List<String>();
+        
         HttpRequest req = new HttpRequest();
         req.setEndpoint('callout:Slate_Grad/manage/query/run?id=330b9299-5efa-452a-a9d3-e25c89add368&cmd=service&output=json&h=cd189a82-0b2c-4ee9-a52e-e384fd52d84d');
         req.setMethod('GET');
@@ -42,59 +68,67 @@ global class SlateIntegrationBatch implements Database.Batchable<Object>, Databa
         for(Object o: scope){
             Row stagingResObj = (ROW)o;
             Slate_Staging_Record__c stagingObj = new Slate_Staging_Record__c();
-            stagingObj.Slate_Id__c = stagingResObj.SlateID;
-            stagingObj.CSU_Id__c = !String.isBlank(stagingResObj.CSUID) ? stagingResObj.CSUID : '';
-            stagingObj.FirstName__c = stagingResObj.Name.split(',').size() > 1 ? stagingResObj.Name.split(',').get(1) : '';
-            stagingObj.Name__c = stagingResObj.Name.split(',').size() > 0 ? stagingResObj.Name.split(',').get(0) : '';
-            stagingObj.Term__c = stagingResObj.Term;
-            stagingObj.AppStatus__c = !String.isBlank(stagingResObj.AppStatus) ? stagingResObj.AppStatus : '';
-            stagingObj.CurrentProgramCode__c = !String.isBlank(stagingResObj.CurrentProgramCode) ? stagingResObj.CurrentProgramCode : '';
-            stagingObj.CurrentSiteCode__c = !String.isBlank(stagingResObj.CurrentSiteCode) ? stagingResObj.CurrentSiteCode : '';
-            stagingObj.Decision__c = !String.isBlank(stagingResObj.Decision) ? stagingResObj.Decision : '';
-            stagingObj.MissingChecklistItems__c = !String.isBlank(stagingResObj.MissingChecklistItems) ? stagingResObj.MissingChecklistItems : '';
-            stagingObj.FulfilledChecklistItems__c = !String.isBlank(stagingResObj.FulfilledChecklistItems) ? stagingResObj.FulfilledChecklistItems : '';
-            stagingObj.Email1__c = !String.isBlank(stagingResObj.Email1) ? stagingResObj.Email1 : '';
-            stagingObj.Email2__c = !String.isBlank(stagingResObj.Email2) ? stagingResObj.Email2 : '';
-            stagingObj.Email3__c = !String.isBlank(stagingResObj.Email3) ? stagingResObj.Email3 : '';
-            stagingObj.DevicePrimaryPhone1__c = !String.isBlank(stagingResObj.DevicePrimaryPhone1) ? stagingResObj.DevicePrimaryPhone1 : '';
-            stagingObj.OfficialGPA__c = !String.isBlank(stagingResObj.OfficialGPA) ? stagingResObj.OfficialGPA : '';
+            stagingObj.Slate_Id__c = stagingResObj.slateId;
+            stagingObj.CSU_Id__c = !String.isBlank(stagingResObj.CSUID) ? stagingResObj.csuId : '';
+            stagingObj.FirstName__c = stagingResObj.name.split(',').size() > 1 ? stagingResObj.name.split(',').get(1) : '';
+            stagingObj.Name__c = stagingResObj.name.split(',').size() > 0 ? stagingResObj.name.split(',').get(0) : '';
+            //stagingObj.Term__c = stagingResObj.term;
+            //This modification makes the TERM record management more important... Without a program CREDIT term record the application term match won't work...
+            if(!String.isBlank(stagingResObj.term)){
+                stagingObj.Application_Term__c = termHandler(stagingResObj.term,termIterable);
+            }
+            stagingObj.AppStatus__c = !String.isBlank(stagingResObj.appStatus) ? stagingResObj.appStatus : '';
+            stagingObj.CurrentProgramCode__c = !String.isBlank(stagingResObj.currentProgramCode) ? stagingResObj.currentProgramCode : '';
+            stagingObj.CurrentSiteCode__c = !String.isBlank(stagingResObj.currentSiteCode) ? stagingResObj.currentSiteCode : '';
+            stagingObj.Decision__c = !String.isBlank(stagingResObj.decision) ? stagingResObj.decision : '';
+            stagingObj.MissingChecklistItems__c = !String.isBlank(stagingResObj.missingChecklistItems) ? stagingResObj.missingChecklistItems : '';
+            stagingObj.FulfilledChecklistItems__c = !String.isBlank(stagingResObj.fulfilledChecklistItems) ? stagingResObj.fulfilledChecklistItems : '';
+            stagingObj.Email1__c = !String.isBlank(stagingResObj.email1) ? stagingResObj.email1 : '';
+            stagingObj.Email2__c = !String.isBlank(stagingResObj.email2) ? stagingResObj.email2 : '';
+            stagingObj.Email3__c = !String.isBlank(stagingResObj.email3) ? stagingResObj.email3 : '';
+            stagingObj.DevicePrimaryPhone1__c = !String.isBlank(stagingResObj.devicePrimaryPhone1) ? stagingResObj.devicePrimaryPhone1 : '';
+            stagingObj.OfficialGPA__c = !String.isBlank(stagingResObj.OfficialGPA) ? stagingResObj.officialGPA : '';
             Date dT;
-            if(!String.isBlank(stagingResObj.CreatedDate)) {
-                List<String> strDT = stagingResObj.CreatedDate.split('T');
+            if(!String.isBlank(stagingResObj.createdDate)) {
+                List<String> strDT = stagingResObj.createdDate.split('T');
                 dt = Date.ValueOf(strDT[0]);
             }
             stagingObj.CreatedDate__c = dt != null ?  dt : null;
             listToInsert.add(stagingObj);
         }
-        insert listToInsert;
+        try {
+            insert listToInsert;
+        } catch(Exception e) {
+            System.debug(e);
+        }
     }  
 
     global void finish(Database.BatchableContext bc){
         // execute any post-processing operations
     }
     
-    Public Class SlateWrapperClass {
-        Public List<Row> row;
+    public Class SlateWrapperClass {
+        public List<Row> row;
     }
     
-    public class Row {
-        public String SlateID;
-        public String CSUID;
-        public String Name;
-        public String Term;
-        public String AppStatus;
-        public String CurrentProgram;
-        public String CurrentProgramCode;
-        public String CurrentSiteCode;
-        public String Decision;
-        public String MissingChecklistItems;
-        public String FulfilledChecklistItems;
-        public String Email1;
-        public String Email2;
-        public String Email3;
-        public String DevicePrimaryPhone1;
-        public String Credits;
-        public String OfficialGPA;
-        public String CreatedDate;
+    public Class Row {
+        public String slateId;
+        public String csuId;
+        public String name;
+        public String term;
+        public String appStatus;
+        public String currentProgram;
+        public String currentProgramCode;
+        public String currentSiteCode;
+        public String decision;
+        public String missingChecklistItems;
+        public String fulfilledChecklistItems;
+        public String email1;
+        public String email2;
+        public String email3;
+        public String devicePrimaryPhone1;
+        public String credits;
+        public String officialGPA;
+        public String createdDate;
     }    
 }
