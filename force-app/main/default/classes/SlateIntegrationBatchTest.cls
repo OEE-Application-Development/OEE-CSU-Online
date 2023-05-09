@@ -4,8 +4,12 @@ global class SlateIntegrationBatchTest {
 
     @TestSetup
     private static void makeData(){
+        Account a = new Account();
+        a.Name = 'CSU';
+        insert a;
         hed__term__c t = new hed__term__c();
         t.Name = 'Summer 2022';
+        t.hed__Account__c = a.id;
         insert t;
     }
     @isTest global static void testMethod1() {

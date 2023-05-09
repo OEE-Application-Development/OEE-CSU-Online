@@ -75,7 +75,8 @@ global class SlateIntegrationBatch implements Database.Batchable<Object>, Databa
             //stagingObj.Term__c = stagingResObj.term;
             //This modification makes the TERM record management more important... Without a program CREDIT term record the application term match won't work...
             if(!String.isBlank(stagingResObj.term)){
-                stagingObj.Application_Term__c = termHandler(stagingResObj.term,termIterable);
+                String processedTerm = stagingResObj.term.replace(' Freshman','').replace(' Transfer','').replace(' Non-Degree','').replace(' Second Bachelor/Post-Bachelor','');
+                stagingObj.Application_Term__c = termHandler(processedTerm,termIterable);
             }
             stagingObj.AppStatus__c = !String.isBlank(stagingResObj.appStatus) ? stagingResObj.appStatus : '';
             stagingObj.CurrentProgramCode__c = !String.isBlank(stagingResObj.currentProgramCode) ? stagingResObj.currentProgramCode : '';
