@@ -9,7 +9,7 @@ project:
         - github: 'https://github.com/SalesforceFoundation/EDA'
         - github: 'https://github.com/OEE-Application-Development/OEE-EDA-Base-Unlocked'
         - namespace: lms_hed
-          version: '1.14'
+          version: '1.16'
     git:
         default_branch: 'main'
     source_format: sfdx
