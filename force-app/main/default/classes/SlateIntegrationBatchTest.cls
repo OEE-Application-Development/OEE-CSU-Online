@@ -1,11 +1,24 @@
 @isTest
 global class SlateIntegrationBatchTest {
+
+
+    @TestSetup
+    private static void makeData(){
+        Account a = new Account();
+        a.Name = 'CSU';
+        insert a;
+        hed__term__c t = new hed__term__c();
+        t.Name = 'Summer 2022';
+        t.hed__Account__c = a.id;
+        insert t;
+    }
     @isTest global static void testMethod1() {
         Test.setMock(HttpCalloutMock.class, new SlateIntegrationMockImpl());
         
         Test.startTest();
         SchedulableContext sc = null;
-        SlateIntegrationBatch testsche = new SlateIntegrationBatch();
+        List<hed__Term__c> testTerms = new List<hed__Term__c>([SELECT Id, Name FROM hed__Term__c WHERE RecordType.Name = 'Credit']);
+        SlateIntegrationBatch testsche = new SlateIntegrationBatch(testTerms);
         testsche.execute(sc); 
         Test.stopTest();
         
@@ -16,7 +29,7 @@ global class SlateIntegrationBatchTest {
           HttpResponse res = new HttpResponse();
           res.setStatus('OK');
           res.setStatusCode(200);
-          res.setBody('{"row": [{"SlateID": "123456", "Name": "Kyle Winterrowd"}]}');
+          res.setBody('{"row": [{"SlateID": "123456", "Name": "Kyle Winterrowd", "Term":"Summer 2022"}]}');
           return res;
         }
     }
