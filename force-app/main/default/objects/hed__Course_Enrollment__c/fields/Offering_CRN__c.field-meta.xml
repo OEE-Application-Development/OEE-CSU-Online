@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Offering_CRN__c</fullName>
+    <description>CRN of Enrollment in Banner</description>
+    <externalId>false</externalId>
+    <formula>hed__Course_Offering__r.Banner_CRN__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>CRN of Enrollment in Banner</inlineHelpText>
+    <label>Offering CRN</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

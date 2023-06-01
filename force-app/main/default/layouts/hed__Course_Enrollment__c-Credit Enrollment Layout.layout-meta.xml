@@ -49,6 +49,10 @@
                 <field>Offering_Reference__c</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Offering_CRN__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Edit</behavior>
                 <field>hed__Account__c</field>
             </layoutItems>
