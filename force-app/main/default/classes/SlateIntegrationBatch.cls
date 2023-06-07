@@ -7,7 +7,7 @@ global class SlateIntegrationBatch implements Database.Batchable<Object>, Databa
         //Lookup for accounts to generate a Program List, using Schema to ensure the correct record Type Id
         Id academicProgramId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Academic_Program').getRecordTypeId();
 
-        List<Account> acadList = new List<Account>([SELECT Id, hed__School_Code__c FROM Account WHERE RecordTypeId =: academicProgramId]);
+        List<Account> acadList = new List<Account>([SELECT Id, hed__School_Code__c FROM Account WHERE RecordTypeId =: academicProgramId AND hed__School_Code__c != '']);
 
         SlateIntegrationBatch updateDonationsBatch = new SlateIntegrationBatch(termList,acadList);
         Database.executebatch(updateDonationsBatch, 200);
@@ -58,10 +58,19 @@ global class SlateIntegrationBatch implements Database.Batchable<Object>, Databa
 
     @TestVisible private static Id acadAcctHandler (String programCode, List<Account> acadAcctList) {
         Id acctId;
+
+        String regEXP = '-[A-Za-z]+-';
+        String programCodeSF = '';
+
         for (Account actRow: acadAcctList) {
-            if(actRow.hed__School_Code__c == programCode) {
+            programCodeSF = actRow.hed__School_Code__c;
+
+            if(programCodeSF == programCode) {
                 acctId = actRow.Id;
-                return acctId;
+                break;
+            } else if (programCodeSF?.replaceFirst(regEXP,'-') == programCode.replaceFirst(regEXP,'-')){
+                acctId = actRow.Id;
+                break;
             }
         }
 
@@ -101,6 +110,7 @@ global class SlateIntegrationBatch implements Database.Batchable<Object>, Databa
             
             if(accountId != null) {
                 stagingObj.Application_Program__c = accountId;
+                stagingObj.CurrentProgramCode__c = rowItem.currentProgramCode;
             } else {
                 stagingObj.CurrentProgramCode__c = rowItem.currentProgramCode;
                 stagingObj.CurrentSiteCode__c = rowItem.currentSiteCode;
