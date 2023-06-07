@@ -111,9 +111,11 @@ global class SlateIntegrationBatch implements Database.Batchable<Object>, Databa
             if(accountId != null) {
                 stagingObj.Application_Program__c = accountId;
                 stagingObj.CurrentProgramCode__c = rowItem.currentProgramCode;
+                stagingObj.CurrentSiteCode__c = rowItem.currentSiteCode;
             } else {
                 stagingObj.CurrentProgramCode__c = rowItem.currentProgramCode;
                 stagingObj.CurrentSiteCode__c = rowItem.currentSiteCode;
+                stagingObj.Program_Missing__c = true;
             }
 
         }
