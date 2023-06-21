@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Banner_Status__c</fullName>
+    <description>Status of Enrollment in Banner</description>
+    <externalId>false</externalId>
+    <label>Banner Status</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>LA</fullName>
+                <default>false</default>
+                <label>Late Add-staff use only</label>
+            </value>
+            <value>
+                <fullName>AU</fullName>
+                <default>false</default>
+                <label>Audit-staff use only</label>
+            </value>
+            <value>
+                <fullName>RE</fullName>
+                <default>false</default>
+                <label>Registered</label>
+            </value>
+            <value>
+                <fullName>WD</fullName>
+                <default>false</default>
+                <label>Withdraw From Course by staff</label>
+            </value>
+            <value>
+                <fullName>XF</fullName>
+                <default>false</default>
+                <label>Drop CSU Online Crse-No Assess</label>
+            </value>
+            <value>
+                <fullName>WL</fullName>
+                <default>false</default>
+                <label>Waitlist</label>
+            </value>
+            <value>
+                <fullName>NG</fullName>
+                <default>false</default>
+                <label>Non-gradable Component-staff</label>
+            </value>
+            <value>
+                <fullName>XW</fullName>
+                <default>false</default>
+                <label>Withdraw CSU Online Cntrct Crs</label>
+            </value>
+            <value>
+                <fullName>UW</fullName>
+                <default>false</default>
+                <label>University Withdrwl-staff only</label>
+            </value>
+            <value>
+                <fullName>UN</fullName>
+                <default>false</default>
+                <label>Univ Wthdrwl INTO/SI</label>
+            </value>
+            <value>
+                <fullName>XD</fullName>
+                <default>false</default>
+                <label>Drop CSU Online Course</label>
+            </value>
+            <value>
+                <fullName>DW</fullName>
+                <default>false</default>
+                <label>Drop on web</label>
+            </value>
+            <value>
+                <fullName>UX</fullName>
+                <default>false</default>
+                <label>Univ Wthdrwl CSU Online-staff</label>
+            </value>
+            <value>
+                <fullName>ZD</fullName>
+                <default>false</default>
+                <label>Staff Drop-not on trans-assess</label>
+            </value>
+            <value>
+                <fullName>CW</fullName>
+                <default>false</default>
+                <label>Withdraw From Course on web</label>
+            </value>
+            <value>
+                <fullName>CN</fullName>
+                <default>false</default>
+                <label>Cancelled Section-staff use</label>
+            </value>
+            <value>
+                <fullName>XE</fullName>
+                <default>false</default>
+                <label>CSU Online Extension Granted</label>
+            </value>
+            <value>
+                <fullName>RD</fullName>
+                <default>false</default>
+                <label>Repeat/Delete</label>
+            </value>
+            <value>
+                <fullName>UC</fullName>
+                <default>false</default>
+                <label>Univ Wthdrwl pre-cens-staff</label>
+            </value>
+            <value>
+                <fullName>XU</fullName>
+                <default>false</default>
+                <label>Drop CSU Online Cntrct Course</label>
+            </value>
+            <value>
+                <fullName>RW</fullName>
+                <default>false</default>
+                <label>Register on Web</label>
+            </value>
+            <value>
+                <fullName>UNPAID</fullName>
+                <default>false</default>
+                <label>Unpaid</label>
+            </value>
+            <value>
+                <fullName>UNPAID_DW</fullName>
+                <default>false</default>
+                <label>Unpaid - Removed</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
