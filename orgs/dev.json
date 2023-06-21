@@ -1,6 +1,7 @@
 {
   "orgName": "CSU-Online-Credit - Dev Org",
-  "edition": "Enterprise",
+  "sourceOrg": "00D6g000002hydVEAQ",
+  "features": ["SharedActivities"],
   "settings": {
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true
@@ -21,7 +22,6 @@
       "enableTranslationWorkbench": true
     }
   },
-  "features": ["SharedActivities"],
   "objectSettings": {
     "account": {
       "defaultRecordType": "Administrative"

@@ -12,7 +12,7 @@ private class CreditHelpers_TEST {
 
     @IsTest
     private static void handleStudentEnrollment() {
-        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('test', '2023SP-CO-333-100', false)});
+        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('test', '2023SP-CO-333-100', false, null)});
     }
 
     @IsTest

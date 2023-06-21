@@ -21,6 +21,12 @@
             </value>
         </inputParameters>
         <inputParameters>
+            <name>statusInfo</name>
+            <value>
+                <elementReference>$Record.Status_Detail__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
             <name>userId</name>
             <value>
                 <elementReference>$Record.User_Id__c</elementReference>
