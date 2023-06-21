@@ -4,7 +4,7 @@ public class SlateIntegrationBatchTest {
 
     @TestSetup
     private static void makeData(){
-        Id academicProgramId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Academic_Program').getRecordTypeId();
+        //Id academicProgramId = Schema.SObjectType.Account.getRecordTypeInfosByDeveloperName().get('Academic_Program').getRecordTypeId();
         Id cTermId = Schema.SObjectType.hed__Term__c.getRecordTypeInfosByDeveloperName().get('Credit').getRecordTypeId();
 
 
@@ -15,16 +15,16 @@ public class SlateIntegrationBatchTest {
 
         Account p = new Account(
             Name = 'CSU Program A',
-            hed__school_code__c = 'TEST-PROGRAM-A',
-            RecordTypeId = academicProgramId
+            hed__school_code__c = 'TEST-PROGRAM-A'/*,
+            RecordTypeId = academicProgramId*/
         );
 
         insert p;
 
         Account ptwo = new Account(
             Name = 'CSU Program B',
-            hed__school_code__c = 'TEST-PROGRAM-B',
-            RecordTypeId = academicProgramId
+            hed__school_code__c = 'TEST-PROGRAM-B'/*,
+            RecordTypeId = academicProgramId*/
         );
 
         insert ptwo;
@@ -64,7 +64,7 @@ public class SlateIntegrationBatchTest {
         String testedVal = SlateIntegrationBatch.undergradHandler(termSTR);
         String testedValF = SlateIntegrationBatch.undergradHandler(termSTRF);
 
-        List<Account> lAccount = new List<Account>([SELECT Id, hed__School_Code__c FROM Account WHERE RecordType.Name = 'Academic Program']);
+        List<Account> lAccount = new List<Account>([SELECT Id, hed__School_Code__c FROM Account] /*WHERE RecordType.Name = 'Academic Program']*/);
         Id acctTest;
 
         acctTest = SlateIntegrationBatch.acadAcctHandler('TEST-PROGRAM-B',lAccount);
