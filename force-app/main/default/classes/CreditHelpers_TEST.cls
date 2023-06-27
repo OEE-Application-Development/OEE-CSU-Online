@@ -12,7 +12,10 @@ private class CreditHelpers_TEST {
 
     @IsTest
     private static void handleStudentEnrollment() {
-        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('test', '2023SP-CO-333-100', false, null)});
+        hed__Course_Enrollment__c e = CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('test', '2023SP-CO-333-100', false, null)}).get(0);
+        e.hed__Verification_Status__c = 'Verified';
+        e.csuoee__Banner_Status__c = 'RW';
+        update e;
     }
 
     @IsTest
