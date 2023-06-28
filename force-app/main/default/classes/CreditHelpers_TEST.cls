@@ -12,7 +12,7 @@ private class CreditHelpers_TEST {
 
     @IsTest
     private static void handleStudentEnrollment() {
-        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('test', '2023SP-CO-333-100', false, null)}).get(0);
+        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('TEST', '2023SP-CO-333-100', false, null)}).get(0);
     }
 
     @IsTest
@@ -52,6 +52,9 @@ private class CreditHelpers_TEST {
         e.hed__Verification_Status__c = 'Pending';
         update e;
         update e;
+
+        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('TEST', '2023SP-CO-333-100', false, 'RW')});
+        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('TEST', '2023SP-CO-333-100', true, 'AU')});
     }
     
 }

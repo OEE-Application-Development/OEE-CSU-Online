@@ -27,12 +27,7 @@ global with sharing class CreditHandleEnrollments {
                     csuoee__Marketing_Cloud_Journey_Event_Settings__c journeySettings = [select csuoee__Credit_Drop_EventType__c, csuoee__Credit_Confirmation_Key__c from csuoee__Marketing_Cloud_Journey_Event_Settings__c LIMIT 1];
 
                     // OK, add the event object
-                    csuoee__Marketing_Cloud_Journey_Event__c event = new csuoee__Marketing_Cloud_Journey_Event__c(
-                        csuoee__ContactWhoId__c = emailCheck.hed__Contact__c, 
-                        csuoee__Event__c = journeySettings.csuoee__Credit_Confirmation_Key__c, 
-                        csuoee__Event_Type__c = journeySettings.csuoee__Credit_Drop_EventType__c, 
-                        csuoee__Key__c = emailCheck.csuoee__Offering_Reference__c+'-'+emailCheck.Id+'-'+bannerStatus
-                    );
+                    csuoee__Marketing_Cloud_Journey_Event__c event = new csuoee__Marketing_Cloud_Journey_Event__c(csuoee__ContactWhoId__c = emailCheck.hed__Contact__c, csuoee__Event__c = journeySettings.csuoee__Credit_Confirmation_Key__c, csuoee__Event_Type__c = journeySettings.csuoee__Credit_Drop_EventType__c, csuoee__Key__c = emailCheck.csuoee__Offering_Reference__c+'-'+emailCheck.Id+'-'+bannerStatus);
                     insert event;
                 }
             }
@@ -45,12 +40,7 @@ global with sharing class CreditHandleEnrollments {
                     csuoee__Marketing_Cloud_Journey_Event_Settings__c journeySettings = [select csuoee__Credit_Confirmation_EventType__c, csuoee__Credit_Confirmation_Key__c from csuoee__Marketing_Cloud_Journey_Event_Settings__c LIMIT 1];
 
                     // OK, add the event object
-                    csuoee__Marketing_Cloud_Journey_Event__c event = new csuoee__Marketing_Cloud_Journey_Event__c(
-                        csuoee__ContactWhoId__c = emailCheck.hed__Contact__c, 
-                        csuoee__Event__c = journeySettings.csuoee__Credit_Confirmation_Key__c, 
-                        csuoee__Event_Type__c = journeySettings.csuoee__Credit_Confirmation_EventType__c, 
-                        csuoee__Key__c = emailCheck.csuoee__Offering_Reference__c+'-'+emailCheck.Id+'-'+bannerStatus
-                    );
+                    csuoee__Marketing_Cloud_Journey_Event__c event = new csuoee__Marketing_Cloud_Journey_Event__c(csuoee__ContactWhoId__c = emailCheck.hed__Contact__c, csuoee__Event__c = journeySettings.csuoee__Credit_Confirmation_Key__c, csuoee__Event_Type__c = journeySettings.csuoee__Credit_Confirmation_EventType__c, csuoee__Key__c = emailCheck.csuoee__Offering_Reference__c+'-'+emailCheck.Id+'-'+bannerStatus);
                     insert event;
                 }
             }
