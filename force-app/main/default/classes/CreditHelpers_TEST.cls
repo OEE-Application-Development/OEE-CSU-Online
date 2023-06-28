@@ -12,7 +12,7 @@ private class CreditHelpers_TEST {
 
     @IsTest
     private static void handleStudentEnrollment() {
-        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('test', '2023SP-CO-333-100', false, null)});
+        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('test', '2023SP-CO-333-100', false, null)}).get(0);
     }
 
     @IsTest
@@ -44,6 +44,14 @@ private class CreditHelpers_TEST {
         System.assert(pe.csuoee__Term__c.equals(t.Id));
         System.assert(pe.hed__Account__c.equals(a.Id));
         System.assert(pe.hed__Contact__c.equals(c.Id));
+
+        hed__Course_Enrollment__c e = new hed__Course_Enrollment__c(hed__Contact__c = c.Id, hed__Course_Offering__c = offering.Id);
+        e.hed__Verification_Status__c = 'Verified';
+        e.csuoee__Banner_Status__c = 'RW';
+        insert e;
+        e.hed__Verification_Status__c = 'Pending';
+        update e;
+        update e;
     }
     
 }
