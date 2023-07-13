@@ -46,10 +46,6 @@
                 <behavior>Readonly</behavior>
                 <field>Banner_Confirmed__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Registration_Batch__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

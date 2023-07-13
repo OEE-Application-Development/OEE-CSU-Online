@@ -4,7 +4,7 @@
         <name>Get_Credit_Term_RecordType</name>
         <label>Get Credit Term RecordType</label>
         <locationX>182</locationX>
-        <locationY>314</locationY>
+        <locationY>278</locationY>
         <actionName>CreditRecordTypeRequestor</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -23,7 +23,7 @@
         <name>Get_CSU_Institution_Account</name>
         <label>Get CSU Institution Account</label>
         <locationX>50</locationX>
-        <locationY>794</locationY>
+        <locationY>710</locationY>
         <actionName>AccountRequestor</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -48,7 +48,7 @@
         <name>Get_Institution_RecordType</name>
         <label>Get Institution RecordType</label>
         <locationX>50</locationX>
-        <locationY>674</locationY>
+        <locationY>602</locationY>
         <actionName>CreditRecordTypeRequestor</actionName>
         <actionType>apex</actionType>
         <connector>
@@ -68,7 +68,7 @@
         <name>Does_Term_Exist</name>
         <label>Does Term Exist?</label>
         <locationX>182</locationX>
-        <locationY>554</locationY>
+        <locationY>494</locationY>
         <defaultConnector>
             <targetReference>Update_Term</targetReference>
         </defaultConnector>
@@ -93,7 +93,7 @@
         <name>Is_Credit</name>
         <label>Is Credit?</label>
         <locationX>380</locationX>
-        <locationY>194</locationY>
+        <locationY>170</locationY>
         <defaultConnectorLabel>Noncredit</defaultConnectorLabel>
         <rules>
             <name>Credit</name>
@@ -115,7 +115,7 @@
     <formulas>
         <name>TermNameToReference</name>
         <dataType>String</dataType>
-        <expression>RIGHT({!$Record.csuoee__Term_Name__c}, FIND(&apos; &apos;, {!$Record.csuoee__Term_Name__c}))&amp;CASE(LEFT({!$Record.csuoee__Term_Name__c}, FIND(&apos; &apos;, {!$Record.csuoee__Term_Name__c})), &apos;Spring&apos;, &apos;SP&apos;, &apos;Summer&apos;, &apos;SM&apos;, &apos;FA&apos;)</expression>
+        <expression>RIGHT({!$Record.csuoee__Term_Name__c}, FIND(&apos; &apos;, {!$Record.csuoee__Term_Name__c})-3)&amp;CASE(LEFT({!$Record.csuoee__Term_Name__c}, FIND(&apos; &apos;, {!$Record.csuoee__Term_Name__c})), &apos;Spring &apos;, &apos;SP&apos;, &apos;Summer &apos;, &apos;SM&apos;, &apos;FA&apos;)&amp;&apos;-NCT&apos;</expression>
     </formulas>
     <interviewLabel>Process Credit Term Publish {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Process Credit Term Publish</label>
@@ -142,7 +142,13 @@
         <name>Create_Term</name>
         <label>Create Term</label>
         <locationX>50</locationX>
-        <locationY>914</locationY>
+        <locationY>818</locationY>
+        <inputAssignments>
+            <field>Display_Order__c</field>
+            <value>
+                <elementReference>$Record.Term_Order__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Is_Visible__c</field>
             <value>
@@ -192,7 +198,7 @@
         <name>Get_Credit_Term</name>
         <label>Get Credit Term</label>
         <locationX>182</locationX>
-        <locationY>434</locationY>
+        <locationY>386</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Does_Term_Exist</targetReference>
@@ -213,7 +219,7 @@
         <name>Update_Term</name>
         <label>Update Term</label>
         <locationX>314</locationX>
-        <locationY>674</locationY>
+        <locationY>602</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -222,6 +228,12 @@
                 <elementReference>Get_Credit_Term.Id</elementReference>
             </value>
         </filters>
+        <inputAssignments>
+            <field>Display_Order__c</field>
+            <value>
+                <elementReference>$Record.Term_Order__c</elementReference>
+            </value>
+        </inputAssignments>
         <inputAssignments>
             <field>Is_Visible__c</field>
             <value>
