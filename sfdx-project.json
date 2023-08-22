@@ -2,16 +2,13 @@
   "packageDirectories": [
     {
       "package": "OEE-CSU-Online",
-      "versionNumber": "0.7.0.NEXT",
+      "versionNumber": "0.8.0.NEXT",
       "path": "force-app",
       "definitionFile": "orgs/dev.json",
       "default": true,
       "dependencies": [
         {
           "package": "04tHq0000016bsrIAA"
-        },
-        {
-          "package": "04t4J000002JNgsQAG"
         },
         {
           "package": "04tDn000000zNsNIAU"
@@ -23,7 +20,7 @@
           "package": "04tDo0000008w4HIAQ"
         },
         {
-          "package": "04t5b000001yyx4AAA"
+          "package": "04tQm0000000FzxIAE"
         }
       ]
     }
