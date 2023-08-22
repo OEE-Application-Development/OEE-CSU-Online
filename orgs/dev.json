@@ -9,6 +9,9 @@
     "chatterSettings": {
       "enableChatter": true
     },
+    "emailAdministrationSettings": {
+      "enableEnhancedEmailEnabled": true
+    },
     "userManagementSettings": {
       "enableNewProfileUI": true
     },
