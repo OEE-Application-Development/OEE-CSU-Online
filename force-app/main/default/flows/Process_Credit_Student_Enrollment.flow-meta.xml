@@ -1,10 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Get_Pending_Enrollment_RecordType</name>
+        <label>Get Pending Enrollment RecordType</label>
+        <locationX>182</locationX>
+        <locationY>818</locationY>
+        <actionName>CreditRecordTypeRequestor</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Create_Pending_Enrollment</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recordTypeName</name>
+            <value>
+                <stringValue>Student Pending</stringValue>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>PendingRecordType</assignToReference>
+            <name>output</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
         <name>Handle_Student_Credit_Enrollment</name>
         <label>Handle Student Credit Enrollment</label>
-        <locationX>50</locationX>
-        <locationY>314</locationY>
+        <locationX>446</locationX>
+        <locationY>386</locationY>
         <actionName>CreditHandleEnrollments</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -36,10 +58,32 @@
     </actionCalls>
     <apiVersion>57.0</apiVersion>
     <decisions>
+        <name>Connection_exists</name>
+        <label>Connection exists?</label>
+        <locationX>50</locationX>
+        <locationY>710</locationY>
+        <defaultConnector>
+            <targetReference>Get_Pending_Enrollment_RecordType</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Connection Missing</defaultConnectorLabel>
+        <rules>
+            <name>Connection_Already_Exists</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Lookup_Course_Connection.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <label>Connection Already Exists</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Is_Credit</name>
         <label>Is Credit?</label>
-        <locationX>182</locationX>
-        <locationY>194</locationY>
+        <locationX>479</locationX>
+        <locationY>170</locationY>
         <defaultConnectorLabel>PE</defaultConnectorLabel>
         <rules>
             <name>Credit</name>
@@ -52,9 +96,34 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Handle_Student_Credit_Enrollment</targetReference>
+                <targetReference>Is_it_Pending</targetReference>
             </connector>
             <label>Credit</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Is_it_Pending</name>
+        <label>Is it Pending?</label>
+        <locationX>248</locationX>
+        <locationY>278</locationY>
+        <defaultConnector>
+            <targetReference>Handle_Student_Credit_Enrollment</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Standard Enrollment</defaultConnectorLabel>
+        <rules>
+            <name>Request_is_in_Pending</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.csuoee__Status_Detail__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pending</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Lookup_Offering</targetReference>
+            </connector>
+            <label>Request is in Pending</label>
         </rules>
     </decisions>
     <environments>Default</environments>
@@ -79,8 +148,125 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Pending_Enrollment</name>
+        <label>Create Pending Enrollment</label>
+        <locationX>182</locationX>
+        <locationY>926</locationY>
+        <inputAssignments>
+            <field>Credit_Registration_Email_Sent__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>PendingRecordType.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>hed__Contact__c</field>
+            <value>
+                <elementReference>Get_Contact_by_CSU_ID.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>hed__Course_Offering__c</field>
+            <value>
+                <elementReference>Lookup_Offering.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>hed__Status__c</field>
+            <value>
+                <stringValue>In Progress</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>hed__Verification_Status__c</field>
+            <value>
+                <stringValue>Pending</stringValue>
+            </value>
+        </inputAssignments>
+        <object>hed__Course_Enrollment__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Contact_by_CSU_ID</name>
+        <label>Get Contact by CSU ID</label>
+        <locationX>50</locationX>
+        <locationY>494</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Lookup_Course_Connection</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CSU_ID__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.User_Id__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Contact</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Lookup_Course_Connection</name>
+        <label>Lookup Course Connection</label>
+        <locationX>50</locationX>
+        <locationY>602</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Connection_exists</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>hed__Contact__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Get_Contact_by_CSU_ID.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>hed__Course_Offering__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Lookup_Offering.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>hed__Course_Enrollment__c</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Lookup_Offering</name>
+        <label>Lookup Offering</label>
+        <locationX>50</locationX>
+        <locationY>386</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Contact_by_CSU_ID</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>lms_hed__LMS_Reference_Code__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Section_Reference__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>hed__Course_Offering__c</object>
+        <queriedFields>Id</queriedFields>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
     <start>
-        <locationX>56</locationX>
+        <locationX>353</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Is_Credit</targetReference>
@@ -88,5 +274,13 @@
         <object>Confirmation_Publish__e</object>
         <triggerType>PlatformEvent</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
+    <variables>
+        <name>PendingRecordType</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>RecordType</objectType>
+    </variables>
 </Flow>

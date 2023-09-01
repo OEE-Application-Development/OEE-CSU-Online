@@ -17,5 +17,14 @@ global with sharing class CreditHelpers {
 
         return creditInstitutionRecordType;
     }
+
+    private static RecordType pendingEnrollmentRecordType = null;
+    global static RecordType getPendingEnrollmentRecordType() {
+        if(pendingEnrollmentRecordType == null) {
+            pendingEnrollmentRecordType = [select Id from RecordType where NamespacePrefix = 'csuoee' and SobjectType = 'hed__Course_Enrollment__c' and DeveloperName = 'Student_Pending' LIMIT 1];
+        }
+
+        return pendingEnrollmentRecordType;
+    }
     
 }
