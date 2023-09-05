@@ -12,6 +12,9 @@ global with sharing class CreditRecordTypeRequestor  {
                     when 'Educational Institution' {
                         recordTypes.add(CreditHelpers.getEducationInstitutionType());
                     }
+                    when 'Student' {
+                        recordTypes.add(CreditHelpers.getStudentEnrollmentRecordType());
+                    }
                     when 'Student Pending' {
                         recordTypes.add(CreditHelpers.getPendingEnrollmentRecordType());
                     }
