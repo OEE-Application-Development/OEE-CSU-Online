@@ -1,9 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
+        <name>Create_Confirmation_Event</name>
+        <label>Create Confirmation Event</label>
+        <locationX>578</locationX>
+        <locationY>458</locationY>
+        <actionName>CreditConfirmedEvent</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>bannerStatus</name>
+            <value>
+                <elementReference>CourseEnrollmentToTrack.Banner_Status__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>offeringReference</name>
+            <value>
+                <elementReference>CourseEnrollmentToTrack.Offering_Reference__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>status</name>
+            <value>
+                <elementReference>CourseEnrollmentToTrack.hed__Status__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>userId</name>
+            <value>
+                <elementReference>CourseEnrollmentToTrack.Contact_CSU_ID__c</elementReference>
+            </value>
+        </inputParameters>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </actionCalls>
+    <actionCalls>
         <name>Initial_State_from_Middleware</name>
-        <label>Initial State from Middleware</label>
-        <locationX>380</locationX>
+        <label>Get State from Middleware</label>
+        <locationX>314</locationX>
         <locationY>242</locationY>
         <actionName>CheckEnrollmentStatusViaMiddleware</actionName>
         <actionType>apex</actionType>
@@ -24,61 +58,10 @@
     </actionCalls>
     <apiVersion>58.0</apiVersion>
     <assignments>
-        <name>Set_Banner_Status</name>
-        <label>Set Banner Status</label>
-        <locationX>578</locationX>
-        <locationY>566</locationY>
-        <assignmentItems>
-            <assignToReference>CourseEnrollmentToTrack.Banner_Confirmed__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>CourseEnrollmentToTrack.Banner_Status__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>CourseEnrollmentToTrack.hed__Status__c</elementReference>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>CourseEnrollmentToTrack.hed__Status__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Enrolled</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>CourseEnrollmentToTrack.hed__Verification_Status__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Verified</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>CourseEnrollmentToTrack.hed__Verification_Status_Date__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Update_Enrollment</targetReference>
-        </connector>
-    </assignments>
-    <assignments>
-        <name>Set_Enrollment_Status</name>
-        <label>Set Enrollment Status</label>
+        <name>NOOP</name>
+        <label>NOOP</label>
         <locationX>50</locationX>
         <locationY>458</locationY>
-        <assignmentItems>
-            <assignToReference>CourseEnrollmentToTrack.Banner_Confirmed__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </assignmentItems>
         <assignmentItems>
             <assignToReference>CourseEnrollmentToTrack.Banner_Status__c</assignToReference>
             <operator>Assign</operator>
@@ -86,60 +69,11 @@
                 <elementReference>ConfirmationEvent.Banner_Status__c</elementReference>
             </value>
         </assignmentItems>
-        <assignmentItems>
-            <assignToReference>CourseEnrollmentToTrack.hed__Status__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Enrolled</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>CourseEnrollmentToTrack.hed__Verification_Status__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <stringValue>Verified</stringValue>
-            </value>
-        </assignmentItems>
-        <assignmentItems>
-            <assignToReference>CourseEnrollmentToTrack.hed__Verification_Status_Date__c</assignToReference>
-            <operator>Assign</operator>
-            <value>
-                <elementReference>$Flow.CurrentDateTime</elementReference>
-            </value>
-        </assignmentItems>
-        <connector>
-            <targetReference>Update_Enrollment</targetReference>
-        </connector>
     </assignments>
-    <decisions>
-        <name>Set_Enrolled</name>
-        <label>Set Enrolled?</label>
-        <locationX>710</locationX>
-        <locationY>458</locationY>
-        <defaultConnector>
-            <targetReference>Update_Enrollment</targetReference>
-        </defaultConnector>
-        <defaultConnectorLabel>Invalid Enrollment</defaultConnectorLabel>
-        <rules>
-            <name>Valid_Enrollment</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>ValidBannerRegistration</leftValueReference>
-                <operator>EqualTo</operator>
-                <rightValue>
-                    <booleanValue>true</booleanValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>Set_Banner_Status</targetReference>
-            </connector>
-            <label>Valid Enrollment</label>
-        </rules>
-    </decisions>
     <decisions>
         <name>Valid_Registration_to_Track</name>
         <label>Valid Registration to Track?</label>
-        <locationX>831</locationX>
+        <locationX>578</locationX>
         <locationY>134</locationY>
         <defaultConnectorLabel>Invalid Registration</defaultConnectorLabel>
         <rules>
@@ -192,51 +126,9 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
-    <recordCreates>
-        <name>Create_Enrollment_Update_Error</name>
-        <label>Create Enrollment Update Error</label>
-        <locationX>1018</locationX>
-        <locationY>950</locationY>
-        <inputAssignments>
-            <field>hed__Error_Type__c</field>
-            <value>
-                <stringValue>Update Course Enrollment Failure</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>hed__Full_Message__c</field>
-            <value>
-                <stringValue>Failed to Update Enrollment with Id: {!CourseEnrollmentToTrack.Id}</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>hed__Object_Type__c</field>
-            <value>
-                <stringValue>hed__Course_Enrollment__c</stringValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
-            <field>hed__Stack_Trace__c</field>
-            <value>
-                <elementReference>$Flow.FaultMessage</elementReference>
-            </value>
-        </inputAssignments>
-        <object>hed__Error__c</object>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordCreates>
-    <recordUpdates>
-        <name>Update_Enrollment</name>
-        <label>Update Enrollment</label>
-        <locationX>380</locationX>
-        <locationY>842</locationY>
-        <faultConnector>
-            <targetReference>Create_Enrollment_Update_Error</targetReference>
-        </faultConnector>
-        <inputReference>CourseEnrollmentToTrack</inputReference>
-    </recordUpdates>
     <runInMode>DefaultMode</runInMode>
     <start>
-        <locationX>705</locationX>
+        <locationX>452</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Valid_Registration_to_Track</targetReference>
@@ -262,10 +154,10 @@
     <waits>
         <name>Wait_for_Valid_Registration</name>
         <label>Wait for Valid Registration</label>
-        <locationX>380</locationX>
+        <locationX>314</locationX>
         <locationY>350</locationY>
         <defaultConnector>
-            <targetReference>Set_Enrolled</targetReference>
+            <targetReference>Create_Confirmation_Event</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>NOOP</defaultConnectorLabel>
         <waitEvents>
@@ -279,7 +171,7 @@
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Set_Enrollment_Status</targetReference>
+                <targetReference>NOOP</targetReference>
             </connector>
             <eventType>csuoee__Confirmation_Publish__e</eventType>
             <inputParameters>

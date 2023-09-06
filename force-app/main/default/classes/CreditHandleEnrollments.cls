@@ -17,10 +17,10 @@ global with sharing class CreditHandleEnrollments {
         if(contact == null) return null;
 
         hed__Course_Enrollment__c enrollment = CombinedFunctions.handleStudentEnrollment(contact, reference, isDrop);
-        
+        hed__Course_Offering__c offering = [select Id, csuoee__Campus_Code__c from hed__Course_Offering__c where Id = :enrollment.hed__Course_Offering__c LIMIT 1];
         // journey logic
         if(isDrop) {
-            if(!validBannerEnrollment(bannerStatus)) {
+            if(!validBannerEnrollment(bannerStatus) && validCampusCode(offering)) {
                 //Has a confirmation email been sent? If not, we don't need to send anything.
                 hed__Course_Enrollment__c emailCheck = [select Id, hed__Contact__c, csuoee__Offering_Reference__c, csuoee__Credit_Registration_Email_Sent__c from hed__Course_Enrollment__c where Id = :enrollment.Id LIMIT 1];
                 if(emailCheck.csuoee__Credit_Registration_Email_Sent__c) {
@@ -33,7 +33,7 @@ global with sharing class CreditHandleEnrollments {
             }
         } else {
             // Valid Banner enrollment?
-            if(validBannerEnrollment(bannerStatus)) {
+            if(validBannerEnrollment(bannerStatus) && validCampusCode(offering)) {
                 // Check if the email has already been sent.
                 hed__Course_Enrollment__c emailCheck = [select Id, hed__Contact__c, csuoee__Offering_Reference__c, csuoee__Credit_Registration_Email_Sent__c from hed__Course_Enrollment__c where Id = :enrollment.Id LIMIT 1];
                 if(!emailCheck.csuoee__Credit_Registration_Email_Sent__c) {
@@ -61,6 +61,10 @@ global with sharing class CreditHandleEnrollments {
                 return false;
             }
         }
+    }
+
+    private static boolean validCampusCode(hed__Course_Offering__c offering) {
+        return 'MC'.equals(offering.csuoee__Campus_Code__c);
     }
 
 }
