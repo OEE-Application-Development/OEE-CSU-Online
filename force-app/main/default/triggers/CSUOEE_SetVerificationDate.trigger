@@ -16,5 +16,19 @@ trigger CSUOEE_SetVerificationDate on hed__Course_Enrollment__c (before insert, 
                 e.hed__Verification_Status_Date__c = Date.today();
             }
         }
+
+        if(e.Id == null) {
+            RecordType studentType = CreditHelpers.getStudentEnrollmentRecordType();
+            if(e.RecordTypeId == null ||  studentType.Id == e.RecordTypeId) {
+                // If an insert, determine recordtype.
+                if('Enrolled'.equals(e.hed__Status__c)) {
+                    // Set as Student Enrollment
+                    e.RecordTypeId = studentType.Id;
+                } else {
+                    // Set as Pending Student Enrollment
+                    e.RecordTypeId = CreditHelpers.getPendingEnrollmentRecordType().Id;
+                }
+            }
+        }
     }
 }
