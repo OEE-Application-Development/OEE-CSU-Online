@@ -85,8 +85,17 @@ private class CreditHelpers_TEST {
 
         System.assertEquals('Enrolled', ce.hed__Status__c, 'Failed to set enrollment status properly.');
 
-        ce.hed__Contact__c = '';
-        update ce;
+        Contact testContact = new Contact(LastName = 'Dupe');
+        insert testContact;
+
+        try {
+            ce.hed__Contact__c = testContact.Id;
+            update ce;
+
+            System.assert(false);
+        }catch (DmlException de) {
+            System.assert(true);
+        }
     }
     
 }
