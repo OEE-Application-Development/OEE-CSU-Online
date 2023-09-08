@@ -3,6 +3,9 @@ private class CreditHelpers_TEST {
 
     @TestSetup
     static void setupCourseData(){
+        csuoee__Marketing_Cloud_Journey_Event_Settings__c settings = new csuoee__Marketing_Cloud_Journey_Event_Settings__c(csuoee__Credit_Confirmation_EventType__c = 'fake-id', csuoee__Credit_Confirmation_Key__c = 'fake-key');
+        insert settings;
+
         Contact c = new Contact(LastName = 'Test', csuoee__EID__c = 'TEST');
         insert c;
 
@@ -18,7 +21,7 @@ private class CreditHelpers_TEST {
         hed__Course__c course = new hed__Course__c(hed__Course_ID__c = 'CO 333', hed__Account__c = a.Id, csuoee__Course_Code__c = 'CO 333');
         insert course;
 
-        hed__Course_Offering__c offering = new hed__Course_Offering__c(hed__Term__c = t.Id, hed__Course__c = course.Id, Name = 'CO 333 100', hed__Section_ID__c = '100');
+        hed__Course_Offering__c offering = new hed__Course_Offering__c(hed__Term__c = t.Id, hed__Course__c = course.Id, Name = 'CO 333 100', hed__Section_ID__c = '100', lms_hed__LMS_Reference_Code__c = '2023SP-CO-333-100', csuoee__Campus_Code__c = 'MC');
         insert offering;
 
         //TermReference-Enrollment-EID
@@ -96,6 +99,40 @@ private class CreditHelpers_TEST {
         }catch (DmlException de) {
             System.assert(true);
         }
+    }
+
+    @IsTest
+    private static void creditConfirmedEvent() {
+        Test.startTest();
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
+        CreditConfirmedEvent.CreditConfirmedRequest t = new CreditConfirmedEvent.CreditConfirmedRequest();
+        CreditConfirmedEvent.enrollStudent(new List<CreditConfirmedEvent.CreditConfirmedRequest>{new CreditConfirmedEvent.CreditConfirmedRequest('test-user', '2023SP-ACT-205-100')});
+
+        Test.stopTest();
+    }
+
+    @IsTest
+    private static void credtHandleStudentEnrollment() {
+        //CombinedFunctions.EnrollmentRequest
+        CombinedFunctions.EnrollmentRequest req = new CombinedFunctions.EnrollmentRequest();
+        req.userId = 'TEST';
+        req.offeringReference = '2023SP-CO-333-100';
+        req.isDrop = false;
+        req.statusInfo = 'RW';
+        
+        CombinedFunctions.EnrollmentRequest req2 = new CombinedFunctions.EnrollmentRequest();
+        req2.userId = 'TEST';
+        req2.offeringReference = '2023SP-CO-333-100';
+        req2.isDrop = true;
+        req2.statusInfo = 'AU';
+
+        Test.startTest();
+        List<hed__Course_Enrollment__c> enrollments = CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest>{req, req2});
+
+        System.assert(enrollments.get(0) != null);
+        System.assert(enrollments.get(1) == null || enrollments.get(1).hed__Status__c == 'Withdrew');
+
+        Test.stopTest();
     }
     
 }
