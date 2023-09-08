@@ -13,7 +13,7 @@ global with sharing class CreditHandleEnrollments {
     }
 
     private static hed__Course_Enrollment__c handleEnrollment(String creditId, String reference, Boolean isDrop, String bannerStatus) {
-        Contact contact = [select Id from Contact where csuoee__CSU_ID__c = :creditId or csuoee__EID__c = :creditId LIMIT 1];
+        Contact contact = [select Id from Contact where csuoee__CSU_ID__c = :creditId or csuoee__EID__c = :creditId or csuoee__Front_Door_ID__c = :creditId LIMIT 1];
         if(contact == null) return null;
 
         hed__Course_Enrollment__c enrollment = CombinedFunctions.handleStudentEnrollment(contact, reference, isDrop);
