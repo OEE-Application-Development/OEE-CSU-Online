@@ -194,16 +194,23 @@
     </recordCreates>
     <recordLookups>
         <name>Get_Contact_by_CSU_ID</name>
-        <label>Get Contact by CSU ID</label>
+        <label>Get Contact by CSU ID or Front Door</label>
         <locationX>50</locationX>
         <locationY>494</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>Lookup_Course_Connection</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
+        <filterLogic>or</filterLogic>
         <filters>
             <field>CSU_ID__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.User_Id__c</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Front_Door_ID__c</field>
             <operator>EqualTo</operator>
             <value>
                 <elementReference>$Record.User_Id__c</elementReference>
