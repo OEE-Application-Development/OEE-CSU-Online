@@ -2,7 +2,7 @@
   "packageDirectories": [
     {
       "package": "OEE-CSU-Online",
-      "versionNumber": "0.11.0.NEXT",
+      "versionNumber": "0.12.0.NEXT",
       "path": "force-app",
       "definitionFile": "orgs/dev.json",
       "default": true,
@@ -11,7 +11,7 @@
           "package": "04tHq0000016bsrIAA"
         },
         {
-          "package": "04tDn000000zNsNIAU"
+          "package": "04tDn000000zPuxIAE"
         },
         {
           "package": "04tDo000000tCNjIAM"
@@ -20,7 +20,10 @@
           "package": "04tDo0000008w4HIAQ"
         },
         {
-          "package": "04tQm0000006uSXIAY"
+          "package": "04tHp00000171TFIAY"
+        },
+        {
+          "package": "04tQm000000KI2PIAW"
         }
       ]
     }
@@ -46,6 +49,7 @@
     "OEE-CSU-Online@0.9.0-3": "04tQm0000006SmRIAU",
     "OEE-CSU-Online@0.9.0-4": "04tQm0000006p4fIAA",
     "OEE-CSU-Online@0.10.0-1": "04tQm0000006uCPIAY",
-    "OEE-CSU-Online@0.11.0-1": "04tQm0000006wPVIAY"
+    "OEE-CSU-Online@0.11.0-1": "04tQm0000006wPVIAY",
+    "OEE-CSU-Online@0.12.0-1": "04tQm000000MCfFIAW"
   }
 }
