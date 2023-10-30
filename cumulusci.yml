@@ -6,6 +6,8 @@ project:
         api_version: '57.0'
         namespace: csuoee
     dependencies:
+        - namespace: oeesvc
+          version: '1.0'
         - github: 'https://github.com/OEE-Application-Development/OEE-EDA-Base-Unlocked'
     git:
         default_branch: 'main'
