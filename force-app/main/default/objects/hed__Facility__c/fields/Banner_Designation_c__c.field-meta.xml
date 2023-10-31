@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Banner_Designation_c__c</fullName>
+    <caseSensitive>false</caseSensitive>
+    <description>Banner ID for Facility.</description>
+    <externalId>true</externalId>
+    <inlineHelpText>Banner ID for Facility.</inlineHelpText>
+    <label>Banner_Designation__c</label>
+    <length>255</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>true</unique>
+</CustomField>
