@@ -2,7 +2,7 @@
   "packageDirectories": [
     {
       "package": "OEE-CSU-Online",
-      "versionNumber": "0.17.0.NEXT",
+      "versionNumber": "0.18.0.NEXT",
       "path": "force-app",
       "definitionFile": "orgs/dev.json",
       "default": true,
@@ -57,6 +57,7 @@
     "OEE-CSU-Online@0.15.0-1": "04tQm000000Or1ZIAS",
     "OEE-CSU-Online@0.16.0-1": "04tQm000000PEW1IAO",
     "OEE-CSU-Online@0.17.0-1": "04tQm000000PI4zIAG",
-    "OEE-CSU-Online@0.17.0-2": "04tQm000000PR6fIAG"
+    "OEE-CSU-Online@0.17.0-2": "04tQm000000PR6fIAG",
+    "OEE-CSU-Online@0.17.0-3": "04tQm000000PRUsIAO"
   }
 }
