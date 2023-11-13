@@ -1,6 +1,6 @@
 trigger CSUOEE_RunCreditRegistrationProcess on hed__Course_Enrollment__c (after insert) {
     for(hed__Course_Enrollment__c enrollment : (List<hed__Course_Enrollment__c>) Trigger.new) {
-        if(enrollment.hed__Status__c != 'Enrolled' && !enrollment.csuoee__Banner_Confirmed__c) {
+        if(enrollment.hed__Status__c != 'Enrolled' && !enrollment.csuoee__Banner_Confirmed__c && enrollment.RecordType.DeveloperName == 'Student_Pending') {
             Map<String, Object> inputMap = new Map<String, Object>();
             inputMap.put('CourseEnrollmentToTrack', enrollment);
 

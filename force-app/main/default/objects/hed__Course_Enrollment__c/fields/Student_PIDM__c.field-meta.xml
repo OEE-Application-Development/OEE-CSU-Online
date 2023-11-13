@@ -3,12 +3,14 @@
     <fullName>Student_PIDM__c</fullName>
     <description>PIDM</description>
     <externalId>false</externalId>
-    <formula>hed__Contact__r.HR_Directory_Entry__r.csumidp__HR_Id__c</formula>
+    <formula>hed__Contact__r.PIDM__c</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
     <inlineHelpText>PIDM</inlineHelpText>
     <label>Student PIDM</label>
+    <precision>18</precision>
     <required>false</required>
+    <scale>0</scale>
     <trackTrending>false</trackTrending>
-    <type>Text</type>
+    <type>Number</type>
     <unique>false</unique>
 </CustomField>
