@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Campus__c</fullName>
+    <description>Campus Code</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Campus Code</inlineHelpText>
+    <label>Campus</label>
+    <length>2</length>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
