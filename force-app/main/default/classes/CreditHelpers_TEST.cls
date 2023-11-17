@@ -40,6 +40,7 @@ private class CreditHelpers_TEST {
 
     @IsTest
     private static void handleStudentEnrollment() {
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
         CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('TEST', '2023SP-CO-333-100', false, null)}).get(0);
     }
 
@@ -53,6 +54,7 @@ private class CreditHelpers_TEST {
         System.assert(pe.csuoee__Term__c.equals(t.Id));
         System.assert(pe.hed__Account__c.equals(a.Id));
         System.assert(pe.hed__Contact__c.equals(c.Id));
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
 
         hed__Course_Offering__c offering = [select Id from hed__Course_Offering__c LIMIT 1];
 
@@ -73,6 +75,7 @@ private class CreditHelpers_TEST {
         Contact c = [select Id from Contact LIMIT 1];
         hed__Course_Offering__c offering = [select Id from hed__Course_Offering__c LIMIT 1];
 
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
         hed__Course_Enrollment__c ce = new hed__Course_Enrollment__c(hed__Course_Offering__c = offering.Id, hed__Contact__c = c.Id, hed__Verification_Status__c = 'Unverified');
         insert ce;
 
@@ -112,7 +115,7 @@ private class CreditHelpers_TEST {
     }
 
     @IsTest
-    private static void credtHandleStudentEnrollment() {
+    private static void creditHandleStudentEnrollment() {
         //CombinedFunctions.EnrollmentRequest
         CombinedFunctions.EnrollmentRequest req = new CombinedFunctions.EnrollmentRequest();
         req.userId = 'TEST';
@@ -127,6 +130,7 @@ private class CreditHelpers_TEST {
         req2.statusInfo = 'AU';
 
         Test.startTest();
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
         List<hed__Course_Enrollment__c> enrollments = CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest>{req, req2});
 
         System.assert(enrollments.get(0) != null);
