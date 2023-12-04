@@ -6,7 +6,7 @@ private class CreditHelpers_TEST {
         csuoee__Marketing_Cloud_Journey_Event_Settings__c settings = new csuoee__Marketing_Cloud_Journey_Event_Settings__c(csuoee__Credit_Confirmation_EventType__c = 'fake-id', csuoee__Credit_Confirmation_Key__c = 'fake-key');
         insert settings;
 
-        Contact c = new Contact(LastName = 'Test', csuoee__EID__c = 'TEST');
+        Contact c = new Contact(LastName = 'Test', csuoee__EID__c = 'TEST', csuoee__CSU_ID__c = 'TESTCSUID');
         insert c;
 
         Account uni = new Account(Name = 'CSU');
@@ -137,6 +137,13 @@ private class CreditHelpers_TEST {
         System.assert(enrollments.get(1) == null || enrollments.get(1).hed__Status__c == 'Withdrew');
 
         Test.stopTest();
+    }
+
+    @IsTest
+    private static void createSend() {
+        CreditRegistrationMessage.createSend(new List<String>{'TESTCSUID'});
+
+        System.assert([select Id from csuoee__Marketing_Cloud_Journey_Event__c limit 1] != null, 'Could not find created send object.');
     }
     
 }
