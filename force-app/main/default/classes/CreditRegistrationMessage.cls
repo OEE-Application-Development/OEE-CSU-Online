@@ -14,7 +14,7 @@ global class CreditRegistrationMessage {
         }
 
         // Generate Send Connections
-        List<Contact> toNotify = [select Id, Name, (select hed__Course_Offering__c, csuoee__Banner_Enrollment_Reference__c from hed__Student_Course_Enrollments__r) from Contact where csuoee__CSU_ID__c in :csuIds order by Name];
+        List<Contact> toNotify = [select Id, Name, csuoee__CSU_ID__c, (select hed__Course_Offering__c, csuoee__Banner_Enrollment_Reference__c from hed__Student_Course_Enrollments__r) from Contact where csuoee__CSU_ID__c in :csuIds order by Name];
         List<csuoee__Marketing_Cloud_Journey_Event__c> events = new List<csuoee__Marketing_Cloud_Journey_Event__c>();
         for(Contact contact : toNotify) {
             String termCode = requestMap.get(contact.csuoee__CSU_ID__c);

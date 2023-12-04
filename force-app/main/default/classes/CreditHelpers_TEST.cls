@@ -144,7 +144,7 @@ private class CreditHelpers_TEST {
         CreditSendRequest request = new CreditSendRequest();
         request.csuId = 'TESTCSUID';
         request.termCode = '202310';
-        CreditRegistrationMessage.createSend(new List<String>{request});
+        CreditRegistrationMessage.createSend(new List<CreditSendRequest>{request});
 
         System.assert([select Id from csuoee__Marketing_Cloud_Journey_Event__c limit 1] != null, 'Could not find created send object.');
     }
