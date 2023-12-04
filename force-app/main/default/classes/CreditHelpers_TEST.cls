@@ -141,6 +141,7 @@ private class CreditHelpers_TEST {
 
     @IsTest
     private static void createSend() {
+        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
         CreditSendRequest request = new CreditSendRequest();
         request.csuId = 'TESTCSUID';
         request.termCode = '202310';
