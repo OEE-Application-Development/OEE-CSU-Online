@@ -12,7 +12,7 @@ private class CreditHelpers_TEST {
         Account uni = new Account(Name = 'CSU');
         insert uni;
 
-        hed__Term__c t = new hed__Term__c(Name = '2023SP', hed__Account__c = uni.Id);
+        hed__Term__c t = new hed__Term__c(Name = '2023SP', csuoee__ODS_Term_ID__c = '202310', hed__Account__c = uni.Id);
         insert t;
 
         Account a = new Account(Name = 'MJR-CONC-DEGR', hed__School_Code__c = 'MJR-CONC-DEGR');
@@ -141,7 +141,10 @@ private class CreditHelpers_TEST {
 
     @IsTest
     private static void createSend() {
-        CreditRegistrationMessage.createSend(new List<String>{'TESTCSUID'});
+        CreditSendRequest request = new CreditSendRequest();
+        request.csuId = 'TESTCSUID';
+        request.termCode = '202310';
+        CreditRegistrationMessage.createSend(new List<String>{request});
 
         System.assert([select Id from csuoee__Marketing_Cloud_Journey_Event__c limit 1] != null, 'Could not find created send object.');
     }
