@@ -21,7 +21,7 @@ private class CreditHelpers_TEST {
         hed__Course__c course = new hed__Course__c(hed__Course_ID__c = 'CO 333', hed__Account__c = a.Id, csuoee__Course_Code__c = 'CO 333');
         insert course;
 
-        hed__Course_Offering__c offering = new hed__Course_Offering__c(hed__Term__c = t.Id, hed__Course__c = course.Id, Name = 'CO 333 100', hed__Section_ID__c = '100', lms_hed__LMS_Reference_Code__c = '2023SP-CO-333-100', csuoee__Campus_Code__c = 'MC');
+        hed__Course_Offering__c offering = new hed__Course_Offering__c(hed__Term__c = t.Id, hed__Course__c = course.Id, Name = 'CO 333 100', hed__Section_ID__c = '100', lms_hed__LMS_Reference_Code__c = '2023SP-CO-333-100', csuoee__Campus_Code__c = 'MC', csuoee__Banner_CRN__c = '12345');
         insert offering;
 
         //TermReference-Enrollment-EID
@@ -146,7 +146,36 @@ private class CreditHelpers_TEST {
         request.termCode = '202310';
         CreditRegistrationMessage.createSend(new List<CreditSendRequest>{request});
 
-        System.assert([select Id from csuoee__Marketing_Cloud_Journey_Event__c limit 1] != null, 'Could not find created send object.');
+        try {
+            csuoee__Marketing_Cloud_Journey_Event__c event = [select Id, csuoee__Key__c from csuoee__Marketing_Cloud_Journey_Event__c limit 1];
+            System.assert(false, 'Event should not have been created.');
+        } catch (QueryException qe) {
+            // Shouldn't be anything
+        }
+        
+        Contact c = [select Id from Contact LIMIT 1];
+        hed__Course_Offering__c offering = [select Id from hed__Course_Offering__c LIMIT 1];
+
+        RecordType studentType = [select Id from RecordType where DeveloperName = 'Student' limit 1];
+        hed__Course_Enrollment__c e = new hed__Course_Enrollment__c(RecordTypeId = studentType.Id, hed__Contact__c = c.Id, hed__Course_Offering__c = offering.Id, csuoee__Banner_Enrollment_Reference__c = '202310-12345-12345678');
+        insert e;
+
+        CreditRegistrationMessage.createSend(new List<CreditSendRequest>{request});
+        
+        try {
+            csuoee__Marketing_Cloud_Journey_Event__c event = [select Id, csuoee__Key__c from csuoee__Marketing_Cloud_Journey_Event__c limit 1];
+            System.assert(false, 'Event should not have been created.');
+        } catch (QueryException qe) {
+            // Shouldn't be anything still! It's not verified.
+        }
+
+        e.hed__Verification_Status__c = 'Verified';
+        update e;
+
+        CreditRegistrationMessage.createSend(new List<CreditSendRequest>{request});
+
+        csuoee__Marketing_Cloud_Journey_Event__c event = [select Id, csuoee__Key__c from csuoee__Marketing_Cloud_Journey_Event__c limit 1];
+        System.assert(event != null, 'Could not find created event.');
     }
     
 }
