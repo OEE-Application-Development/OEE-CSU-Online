@@ -35,7 +35,7 @@ global class CreditRegistrationMessage {
                 csuoee__ContactWhoId__c = contact.Id,
                 csuoee__Event__c = settings.csuoee__Credit_Confirmation_EventType__c,
                 csuoee__Event_Type__c = settings.csuoee__Credit_Confirmation_EventType__c,
-                csuoee__Key__c = settings.csuoee__Credit_Confirmation_EventType__c+'-'+String.valueOf(referenceList.hashCode()),
+                csuoee__Key__c = settings.csuoee__Credit_Confirmation_EventType__c+'-'+contact.csuoee__CSU_ID__c+'-'+String.valueOf(referenceList.hashCode()),
                 csuoee__RelatedToId__c = contact.Id
             ));
         }
