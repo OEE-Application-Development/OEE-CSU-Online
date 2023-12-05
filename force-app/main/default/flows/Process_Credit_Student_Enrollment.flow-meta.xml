@@ -154,12 +154,6 @@
         <locationX>182</locationX>
         <locationY>926</locationY>
         <inputAssignments>
-            <field>Credit_Registration_Email_Sent__c</field>
-            <value>
-                <booleanValue>false</booleanValue>
-            </value>
-        </inputAssignments>
-        <inputAssignments>
             <field>RecordTypeId</field>
             <value>
                 <elementReference>PendingRecordType.Id</elementReference>

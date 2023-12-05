@@ -14,7 +14,7 @@ global class CreditRegistrationMessage {
         }
 
         // Generate Send Connections
-        List<Contact> toNotify = [select Id, Name, csuoee__CSU_ID__c, (select RecordType.DeveloperName, hed__Course_Offering__c, csuoee__Banner_Enrollment_Reference__c, csuoee__Banner_Confirmed__c, hed__Verification_Status__c from hed__Student_Course_Enrollments__r) from Contact where csuoee__CSU_ID__c in :csuIds order by Name];
+        List<Contact> toNotify = [select Id, Name, csuoee__CSU_ID__c, (select RecordType.DeveloperName, hed__Course_Offering__c, csuoee__Banner_Enrollment_Reference__c, csuoee__Banner_Confirmed__c, hed__Verification_Status__c, csuoee__Student_Notified__c from hed__Student_Course_Enrollments__r) from Contact where csuoee__CSU_ID__c in :csuIds order by Name];
         List<csuoee__Marketing_Cloud_Journey_Event__c> events = new List<csuoee__Marketing_Cloud_Journey_Event__c>();
         List<hed__Course_Enrollment__c> enrollmentsToUpdate = new List<hed__Course_Enrollment__c>();
         for(Contact contact : toNotify) {
