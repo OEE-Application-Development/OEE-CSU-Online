@@ -46,7 +46,7 @@ global class CreditRegistrationMessage {
             ));
         }
 
-        insert events;
+        Database.insert(events, false);
         if(!enrollmentsToUpdate.isEmpty()) {
             update enrollmentsToUpdate;
         }
