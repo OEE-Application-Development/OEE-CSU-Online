@@ -186,7 +186,7 @@ private class CreditHelpers_TEST {
         System.assert(available.isEmpty(), 'Should be empty.');
 
         Date today = Date.today();
-        hed__Course_Offering__c offering = new hed__Course_Offering__c(hed__Term__c = ([SELECT Id FROM hed__Term__c LIMIT 1]).Id, hed__Course__c = ([SELECT Id FROM hed__Course__c LIMIT 1]).Id, Name = 'CO 333 110', hed__Section_ID__c = '110', lms_hed__LMS_Reference_Code__c = '2023SP-CO-333-110', csuoee__Campus_Code__c = 'MC', csuoee__Banner_CRN__c = '123456', csuoee__Registration_Start_Date__c = today.addDays(-1), csuoee__Registration_End_Date__c = today.addDays(1));
+        hed__Course_Offering__c offering = new hed__Course_Offering__c(hed__Term__c = ([SELECT Id FROM hed__Term__c LIMIT 1]).Id, hed__Course__c = ([SELECT Id FROM hed__Course__c LIMIT 1]).Id, Name = 'CO 333 110', hed__Section_ID__c = '110', lms_hed__LMS_Reference_Code__c = '2023SP-CO-333-110', csuoee__Campus_Code__c = 'MC', csuoee__Banner_CRN__c = '23456', csuoee__Registration_Start_Date__c = today.addDays(-1), csuoee__Registration_End_Date__c = today.addDays(1));
         insert offering;
 
         available = (new AvailableCreditOfferingSearcher(new Map<String, Object>{})).searchCreditOfferings();
