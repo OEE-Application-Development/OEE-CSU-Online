@@ -12,13 +12,13 @@ private class CreditHelpers_TEST {
         Account uni = new Account(Name = 'CSU');
         insert uni;
 
-        hed__Term__c t = new hed__Term__c(Name = '2023SP', csuoee__ODS_Term_ID__c = '202310', hed__Account__c = uni.Id);
+        hed__Term__c t = new hed__Term__c(Name = '2023SP', csuoee__ODS_Term_ID__c = '202310', hed__Account__c = uni.Id, RecordTypeId = ([SELECT Id FROM RecordType WHERE SobjectType = 'hed__Term__c' AND DeveloperName = 'Credit' LIMIT 1]).Id);
         insert t;
 
         Account a = new Account(Name = 'MJR-CONC-DEGR', hed__School_Code__c = 'MJR-CONC-DEGR');
         insert a;
 
-        hed__Course__c course = new hed__Course__c(hed__Course_ID__c = 'CO 333', hed__Account__c = a.Id, csuoee__Course_Code__c = 'CO 333');
+        hed__Course__c course = new hed__Course__c(hed__Course_ID__c = 'CO 333', hed__Account__c = a.Id, csuoee__Course_Code__c = 'CO 333', RecordTypeId = ([SELECT Id FROM RecordType WHERE SobjectType = 'hed__Course__c' AND DeveloperName = 'Credit' LIMIT 1]).Id);
         insert course;
 
         hed__Course_Offering__c offering = new hed__Course_Offering__c(hed__Term__c = t.Id, hed__Course__c = course.Id, Name = 'CO 333 100', hed__Section_ID__c = '100', lms_hed__LMS_Reference_Code__c = '2023SP-CO-333-100', csuoee__Campus_Code__c = 'MC', csuoee__Banner_CRN__c = '12345');
@@ -177,6 +177,25 @@ private class CreditHelpers_TEST {
 
         csuoee__Marketing_Cloud_Journey_Event__c event = [select Id, csuoee__Key__c from csuoee__Marketing_Cloud_Journey_Event__c limit 1];
         System.assert(event != null, 'Could not find created event.');
+    }
+
+    @IsTest
+    private static void testSearcher() {
+        Test.startTest();
+        List<hed__Course_Offering__c> available = (new AvailableCreditOfferingSearcher()).searchCreditOfferings();
+        System.assert(available.isEmpty(), 'Should be empty.');
+
+        Date today = Date.today();
+        hed__Course_Offering__c offering = new hed__Course_Offering__c(hed__Term__c = ([SELECT Id FROM hed__Term__c LIMIT 1]).Id, hed__Course__c = ([SELECT Id FROM hed__Course__c LIMIT 1]).Id, Name = 'CO 333 110', hed__Section_ID__c = '110', lms_hed__LMS_Reference_Code__c = '2023SP-CO-333-110', csuoee__Campus_Code__c = 'MC', csuoee__Banner_CRN__c = '23456', csuoee__Registration_Start_Date__c = today.addDays(-1), csuoee__Registration_End_Date__c = today.addDays(1));
+        insert offering;
+
+        available = (new AvailableCreditOfferingSearcher(new Map<String, Object>{})).searchCreditOfferings();
+        System.assert(!available.isEmpty(), 'Should not be empty.');
+
+        available = (new AvailableCreditOfferingSearcher(new List<String>{'Id', 'Name'}, new Map<String, Object>{'Name' => 'CO 333 110'})).searchCreditOfferings();
+        System.assert(!available.isEmpty(), 'Should not be empty.');
+
+        Test.stopTest();
     }
     
 }

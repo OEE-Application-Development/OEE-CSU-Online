@@ -31,5 +31,7 @@ tasks:
 
 orgs:
     scratch:
-        build:
-            config_file: orgs/build.json
+        dev:
+            config_file: orgs/dev.json
+            days: 7
+            namespaced: True
