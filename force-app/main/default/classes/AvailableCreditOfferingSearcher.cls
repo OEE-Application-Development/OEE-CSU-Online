@@ -1,22 +1,22 @@
-public class AvailableCreditOfferingSearcher {
+global class AvailableCreditOfferingSearcher {
 
     final List<String> requestedFields;
     final Map<String, Object> additionalFilter;
-    public AvailableCreditOfferingSearcher() {
+    global AvailableCreditOfferingSearcher() {
         requestedFields = new List<String>();
         additionalFilter = new Map<String, Object>();
     }
-    public AvailableCreditOfferingSearcher(Map<String, Object> additionalFilter) {
+    global AvailableCreditOfferingSearcher(Map<String, Object> additionalFilter) {
         requestedFields = new List<String>();
         this.additionalFilter = additionalFilter;
     }
-    public AvailableCreditOfferingSearcher(List<String> requestedFields, Map<String, Object> additionalFilter) {
+    global AvailableCreditOfferingSearcher(List<String> requestedFields, Map<String, Object> additionalFilter) {
         if(requestedFields.contains('Id'))requestedFields.remove(requestedFields.indexOf('Id'));
         this.requestedFields = requestedFields;
         this.additionalFilter = additionalFilter;
     }
     
-    public List<hed__Course_Offering__c> searchCreditOfferings() {
+    global List<hed__Course_Offering__c> searchCreditOfferings() {
         Date today = Date.today();
         requestedFields.add('Id');
         String qry = 'SELECT '+requestedFields.toString().substring(1, requestedFields.toString().length()-1)+' FROM hed__Course_Offering__c WHERE csuoee__Registration_Start_Date__c <= :fffff AND csuoee__Registration_End_Date__c >= :fffff AND hed__Course__r.RecordType.DeveloperName = \'Credit\'';
