@@ -50,6 +50,10 @@
                 <behavior>Edit</behavior>
                 <field>Banner_Enrollment_Reference__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Via_XE__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
