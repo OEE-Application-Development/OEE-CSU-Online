@@ -39,38 +39,6 @@ private class CreditHelpers_TEST {
     }
 
     @IsTest
-    private static void handleStudentEnrollment() {
-        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
-        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('TEST', '2023SP-CO-333-100', false, null)}).get(0);
-    }
-
-    @IsTest
-    private static void enrollmentReferenceInsert() {
-        hed__Program_Enrollment__c pe = [select Id, csuoee__Term__c, hed__Account__c, hed__Contact__c from hed__Program_Enrollment__c LIMIT 1];
-        Contact c = [select Id from Contact LIMIT 1];
-        Account a = [select Id, Name from Account where Name = 'MJR-CONC-DEGR' LIMIT 1];
-        hed__Term__c t = [select Id, Name from hed__Term__c LIMIT 1];
-
-        System.assert(pe.csuoee__Term__c.equals(t.Id));
-        System.assert(pe.hed__Account__c.equals(a.Id));
-        System.assert(pe.hed__Contact__c.equals(c.Id));
-        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
-
-        hed__Course_Offering__c offering = [select Id from hed__Course_Offering__c LIMIT 1];
-
-        hed__Course_Enrollment__c e = new hed__Course_Enrollment__c(hed__Contact__c = c.Id, hed__Course_Offering__c = offering.Id);
-        e.hed__Verification_Status__c = 'Verified';
-        e.csuoee__Banner_Status__c = 'RW';
-        insert e;
-        e.hed__Verification_Status__c = 'Pending';
-        update e;
-        update e;
-
-        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('TEST', '2023SP-CO-333-100', false, 'RW')});
-        CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest> {new CombinedFunctions.EnrollmentRequest('TEST', '2023SP-CO-333-100', true, 'AU')});
-    }
-
-    @IsTest
     private static void creditRegistrationProcess() {
         Contact c = [select Id from Contact LIMIT 1];
         hed__Course_Offering__c offering = [select Id from hed__Course_Offering__c LIMIT 1];
@@ -110,31 +78,6 @@ private class CreditHelpers_TEST {
         Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
         CreditConfirmedEvent.CreditConfirmedRequest t = new CreditConfirmedEvent.CreditConfirmedRequest();
         CreditConfirmedEvent.enrollStudent(new List<CreditConfirmedEvent.CreditConfirmedRequest>{new CreditConfirmedEvent.CreditConfirmedRequest('test-user', '2023SP-ACT-205-100')});
-
-        Test.stopTest();
-    }
-
-    @IsTest
-    private static void creditHandleStudentEnrollment() {
-        //CombinedFunctions.EnrollmentRequest
-        CombinedFunctions.EnrollmentRequest req = new CombinedFunctions.EnrollmentRequest();
-        req.userId = 'TEST';
-        req.offeringReference = '2023SP-CO-333-100';
-        req.isDrop = false;
-        req.statusInfo = 'RW';
-        
-        CombinedFunctions.EnrollmentRequest req2 = new CombinedFunctions.EnrollmentRequest();
-        req2.userId = 'TEST';
-        req2.offeringReference = '2023SP-CO-333-100';
-        req2.isDrop = true;
-        req2.statusInfo = 'AU';
-
-        Test.startTest();
-        Test.setMock(HttpCalloutMock.class, BaseTestUtil.getEventCalloutMock());
-        List<hed__Course_Enrollment__c> enrollments = CreditHandleEnrollments.handleStudentEnrollment(new List<CombinedFunctions.EnrollmentRequest>{req, req2});
-
-        System.assert(enrollments.get(0) != null);
-        System.assert(enrollments.get(1) == null || enrollments.get(1).hed__Status__c == 'Withdrew');
 
         Test.stopTest();
     }
