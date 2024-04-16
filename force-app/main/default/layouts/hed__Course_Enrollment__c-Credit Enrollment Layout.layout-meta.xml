@@ -96,6 +96,10 @@
                 <behavior>Edit</behavior>
                 <field>Via_XE__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Term_Code__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
@@ -159,16 +163,6 @@
         <layoutColumns/>
         <style>CustomLinks</style>
     </layoutSections>
-    <relatedLists>
-        <fields>NAME</fields>
-        <fields>lms_hed__LMS_Account__c</fields>
-        <fields>lms_hed__LMS_Course_Term__c</fields>
-        <fields>lms_hed__Enrollment_Link__c</fields>
-        <fields>lms_hed__LMS_External_ID__c</fields>
-        <relatedList>lms_hed__LMS_Course_Enrollment__c.lms_hed__Course_Connection__c</relatedList>
-        <sortField>lms_hed__LMS_Course_Term__c</sortField>
-        <sortOrder>Asc</sortOrder>
-    </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
     <showHighlightsPanel>false</showHighlightsPanel>
     <showInteractionLogPanel>false</showInteractionLogPanel>
