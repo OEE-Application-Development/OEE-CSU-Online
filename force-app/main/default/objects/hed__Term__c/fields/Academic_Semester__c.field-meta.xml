@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Academic_Semester__c</fullName>
+    <description>Semester of the Term (via ODS Term)</description>
+    <externalId>false</externalId>
+    <formula>CASE(RIGHT(ODS_Term_ID__c , 2), &apos;10&apos;, &apos;Spring&apos;, &apos;60&apos;, &apos;Summer&apos;, &apos;70&apos;, &apos;Sr Vet Med FA&apos;, &apos;90&apos;, &apos;Fall&apos;, &apos;&apos;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Semester of the Term (via ODS Term)</inlineHelpText>
+    <label>Academic Semester</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
