@@ -11,6 +11,10 @@
                 <field>Name</field>
             </layoutItems>
             <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Academic_Year__c</field>
+            </layoutItems>
+            <layoutItems>
                 <behavior>Required</behavior>
                 <field>hed__Account__c</field>
             </layoutItems>
@@ -21,10 +25,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>hed__End_Date__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Academic_Year__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -39,6 +39,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>hed__Parent_Term__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Academic_Semester__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -108,7 +112,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h6s000002wdYA</masterLabel>
+        <masterLabel>00hEm000002HshF</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>
