@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AUCC_Category__c</fullName>
+    <description>AUCC category of a course.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>AUCC category of a course.</inlineHelpText>
+    <label>AUCC Category</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>AUCC_Categories</valueSetName>
+    </valueSet>
+</CustomField>
