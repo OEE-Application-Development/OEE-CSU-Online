@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>1A</fullName>
+        <default>false</default>
+        <label>1A - Intermediate Writing</label>
+    </customValue>
+    <customValue>
+        <fullName>1B</fullName>
+        <default>false</default>
+        <label>1B - Quantitative Reasoning</label>
+    </customValue>
+    <customValue>
+        <fullName>1C</fullName>
+        <default>false</default>
+        <label>1C - Diversity, Equity, and Inclusion</label>
+    </customValue>
+    <customValue>
+        <fullName>2</fullName>
+        <default>false</default>
+        <label>2 - Advanced Writing</label>
+    </customValue>
+    <customValue>
+        <fullName>3A</fullName>
+        <default>false</default>
+        <label>3A - Biological and Physical Sciences</label>
+    </customValue>
+    <customValue>
+        <fullName>3B</fullName>
+        <default>false</default>
+        <label>3B - Arts and Humanities</label>
+    </customValue>
+    <customValue>
+        <fullName>3C</fullName>
+        <default>false</default>
+        <label>3C - Social and Behavioral Sciences</label>
+    </customValue>
+    <customValue>
+        <fullName>3D</fullName>
+        <default>false</default>
+        <label>3D - Historical Perspectives</label>
+    </customValue>
+    <customValue>
+        <fullName>4A</fullName>
+        <default>false</default>
+        <label>4A - Applying Fundamental Competencies</label>
+    </customValue>
+    <customValue>
+        <fullName>4B</fullName>
+        <default>false</default>
+        <label>4B - Integrating Foundations and Perspectives</label>
+    </customValue>
+    <customValue>
+        <fullName>4C</fullName>
+        <default>false</default>
+        <label>4C - Capstone Experience</label>
+    </customValue>
+    <description>CSU&apos;s AUCC categories.</description>
+    <masterLabel>AUCC Categories</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

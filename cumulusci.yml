@@ -3,7 +3,7 @@ project:
     name: CSU-Online-Credit
     package:
         name: CSU-Online-Credit
-        api_version: '57.0'
+        api_version: '60.0'
         namespace: csuoee
     dependencies:
         - namespace: oeesvc
