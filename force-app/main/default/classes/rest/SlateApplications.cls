@@ -94,7 +94,11 @@ global with sharing class SlateApplications {
             }
         }
 
-        upsert applications csuoee__Slate_ID__c;
+        try {
+            upsert applications csuoee__Slate_ID__c;
+        } catch(DmlException e) {
+            return new SlateResponse(false, e.getMessage());
+        }
 
         return new SlateResponse(true, 'Slate Applications created.');
     }
