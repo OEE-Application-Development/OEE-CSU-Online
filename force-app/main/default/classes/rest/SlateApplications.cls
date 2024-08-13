@@ -1,6 +1,7 @@
 @RestResource(urlMapping = '/credit/application/slate')
 global with sharing class SlateApplications {
 
+    //TODO: Tell the slate team to allow us to pass IDs so this entire function is no longer required.
     @HttpPost
     global static SlateResponse create(List<hed__Application__c> applications) {
         if(applications.isEmpty()) return new SlateResponse(true, 'No Applications submitted.');
@@ -75,7 +76,7 @@ global with sharing class SlateApplications {
                     if(application.hed__Application_JSON__c == null) return new SlateResponse(false, 'Slate ID: '+application.csuoee__Slate_ID__c+' does not have any JSON to describe a student, and no student was found in Salesforce.');
                     SlateApplication jsonApplication = (SlateApplication)JSON.deserialize(application.hed__Application_JSON__c, SlateApplication.class);
                     String[] nameSplit = jsonApplication.Name.split(',');
-                    frontDoorId = generateContact(slateAccounts, slateContacts, slateMapping, application.csuoee__Slate_ID__c, (nameSplit.size()>1)?nameSplit[1]:'', nameSplit[0], application.csuoee__Email1__c);
+                    frontDoorId = generateContact(slateAccounts, slateContacts, slateMapping, application.csuoee__Slate_ID__c, (nameSplit.size()>1)?nameSplit[1]:'', nameSplit[0], application.csuoee__Slate_Email1__c);
                     uuidMapping.put(application.csuoee__Slate_ID__c, frontDoorId);
                 }
                 application.hed__Applicant__r = new Contact(csuoee__Front_Door_ID__c = frontDoorId);
@@ -94,7 +95,11 @@ global with sharing class SlateApplications {
             }
         }
 
-        upsert applications csuoee__Slate_ID__c;
+        try {
+            upsert applications csuoee__Slate_ID__c;
+        } catch(DmlException e) {
+            return new SlateResponse(false, e.getMessage());
+        }
 
         return new SlateResponse(true, 'Slate Applications created.');
     }
