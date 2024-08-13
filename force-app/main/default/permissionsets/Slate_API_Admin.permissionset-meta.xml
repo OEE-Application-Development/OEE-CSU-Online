@@ -15,6 +15,16 @@
     <description>Permission set to utilize named credentials feature</description>
     <fieldPermissions>
         <editable>true</editable>
+        <field>Account.ParentId</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Account.hed__School_Code__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>hed__Application__c.Slate_Email1__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -41,6 +51,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>hed__Application__c.Slate_Missing_Checklist_Items__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>hed__Application__c.Slate_Official_GPA__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -202,6 +217,10 @@
         <object>hed__Term__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
+    <recordTypeVisibilities>
+        <recordType>Account.Slate_Application_Account</recordType>
+        <visible>true</visible>
+    </recordTypeVisibilities>
     <recordTypeVisibilities>
         <recordType>hed__Term__c.Credit</recordType>
         <visible>true</visible>
