@@ -85,9 +85,7 @@ global with sharing class SlateApplications {
         if(!slateAccounts.isEmpty()) {
             try {
                 // Batch insert Slate Applications
-                System.debug(slateAccounts);
                 insert slateAccounts;
-                System.debug(slateContacts);
                 insert slateContacts;
     
                 upsert slateMapping hed__School_Code__c;
@@ -96,7 +94,6 @@ global with sharing class SlateApplications {
             }
         }
 
-        System.debug(applications);
         upsert applications csuoee__Slate_ID__c;
 
         return new SlateResponse(true, 'Slate Applications created.');
