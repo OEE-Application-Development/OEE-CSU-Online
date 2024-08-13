@@ -50,7 +50,7 @@ global with sharing class SlateApplications {
             }
 
             if(contact == null) {
-                String uuid = generateContact(slateAccounts, slateContacts, slateMapping, slateId, lead.FirstName, lead.LastName);
+                String uuid = generateContact(slateAccounts, slateContacts, slateMapping, slateId, lead.FirstName, lead.LastName, lead.Email);
                 uuidMapping.put(slateId, uuid);
             }
         }
@@ -75,7 +75,7 @@ global with sharing class SlateApplications {
                     if(application.hed__Application_JSON__c == null) return new SlateResponse(false, 'Slate ID: '+application.csuoee__Slate_ID__c+' does not have any JSON to describe a student, and no student was found in Salesforce.');
                     SlateApplication jsonApplication = (SlateApplication)JSON.deserialize(application.hed__Application_JSON__c, SlateApplication.class);
                     String[] nameSplit = jsonApplication.Name.split(',');
-                    frontDoorId = generateContact(slateAccounts, slateContacts, slateMapping, application.csuoee__Slate_ID__c, (nameSplit.size()>1)?nameSplit[1]:'', nameSplit[0]);
+                    frontDoorId = generateContact(slateAccounts, slateContacts, slateMapping, application.csuoee__Slate_ID__c, (nameSplit.size()>1)?nameSplit[1]:'', nameSplit[0], application.csuoee__Email1__c);
                     uuidMapping.put(application.csuoee__Slate_ID__c, frontDoorId);
                 }
                 application.hed__Applicant__r = new Contact(csuoee__Front_Door_ID__c = frontDoorId);
@@ -99,11 +99,11 @@ global with sharing class SlateApplications {
         return new SlateResponse(true, 'Slate Applications created.');
     }
 
-    private static String generateContact(List<Account> slateAccounts, List<Contact> slateContacts, List<Account> slateMapping, String slateId, String firstName, String lastName) {
+    private static String generateContact(List<Account> slateAccounts, List<Contact> slateContacts, List<Account> slateMapping, String slateId, String firstName, String lastName, String primaryEmail) {
         Account slateApplication = new Account(RecordTypeId = CreditHelpers.getSlateApplicationRecordType().Id, Name = (lastName + ' Slate Application'), Parent = new Account(hed__School_Code__c = '126818'), hed__School_Code__c = slateId);
         slateAccounts.add(slateApplication);
         String uuid = System.UUID.randomUUID().toString();
-        Contact student = new Contact(csuoee__Front_Door_ID__c = uuid, FirstName = firstName, LastName = lastName, Account = new Account(hed__School_Code__c = slateId));
+        Contact student = new Contact(csuoee__Front_Door_ID__c = uuid, FirstName = firstName, LastName = lastName, Account = new Account(hed__School_Code__c = slateId), Email = primaryEmail);
         slateContacts.add(student);
 
         slateMapping.add(new Account(hed__School_Code__c = slateId, hed__Primary_Contact__r = new Contact(csuoee__Front_Door_ID__c = uuid)));
