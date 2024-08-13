@@ -1,5 +1,6 @@
 global with sharing class CreditHelpers {
 
+    /* Record Types */
     private static RecordType creditTermRecordType = null;
     global static RecordType getCreditTermType() {
         if(creditTermRecordType == null) {
@@ -34,6 +35,15 @@ global with sharing class CreditHelpers {
         }
 
         return pendingEnrollmentRecordType;
+    }
+
+    private static RecordType slateApplicationRecordType = null;
+    global static RecordType getSlateApplicationRecordType() {
+        if(slateApplicationRecordType == null) {
+            slateApplicationRecordType = [select Id from RecordType where NamespacePrefix = 'csuoee' and SobjectType = 'Account' and DeveloperName = 'Slate_Application_Account' LIMIT 1];
+        }
+
+        return slateApplicationRecordType;
     }
     
 }
