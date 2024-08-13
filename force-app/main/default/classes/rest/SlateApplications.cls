@@ -52,7 +52,7 @@ global with sharing class SlateApplications {
 
             if(contact == null) {
                 SlateApplication jsonApplication = (SlateApplication)JSON.deserialize(slateIdAppMap.get(slateId).hed__Application_JSON__c, SlateApplication.class);
-                String uuid = generateContact(slateAccounts, slateContacts, slateMapping, slateId, lead.FirstName, lead.LastName, lead.Email);
+                String uuid = generateContact(slateAccounts, slateContacts, slateMapping, slateId, lead.FirstName, lead.LastName, lead.Email, jsonApplication.CSUID);
                 uuidMapping.put(slateId, uuid);
             }
         }
