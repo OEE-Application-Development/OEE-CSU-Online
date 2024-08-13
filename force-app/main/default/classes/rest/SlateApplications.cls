@@ -114,7 +114,8 @@ global with sharing class SlateApplications {
             FirstName = firstName, 
             LastName = lastName, 
             Account = new Account(hed__School_Code__c = slateId), 
-            Email = primaryEmail
+            Email = primaryEmail,
+            csuoee__CSU_ID__c = csuId
         );
         slateContacts.add(student);
 
