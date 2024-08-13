@@ -9,6 +9,9 @@ private class CreditHelpers_TEST {
         Contact c = new Contact(LastName = 'Test', csuoee__EID__c = 'TEST', csuoee__CSU_ID__c = 'TESTCSUID');
         insert c;
 
+        Account fortCollinsCampus = new Account(Name = 'CSU Fort Collins', hed__School_Code__c = '126818');
+        insert fortCollinsCampus;
+
         Account uni = new Account(Name = 'CSU');
         insert uni;
 
@@ -137,6 +140,119 @@ private class CreditHelpers_TEST {
 
         available = (new AvailableCreditOfferingSearcher(new List<String>{'Id', 'Name'}, new Map<String, Object>{'Name' => 'CO 333 110'})).searchCreditOfferings();
         System.assert(!available.isEmpty(), 'Should not be empty.');
+
+        Test.stopTest();
+    }
+
+    @IsTest
+    private static void slateApplicationTest() {
+        Test.startTest();
+
+        // Quick Return
+        SlateResponse response = SlateApplications.create(new List<hed__Application__c>());
+        System.assert(response.Success, 'Should not have failed: '+JSON.serialize(response));
+
+        // Fail States
+        response = SlateApplications.create(
+            new List<hed__Application__c> {
+                new hed__Application__c(
+                    hed__Applicant__r = new Contact(csuoee__CSU_ID__c = '123456')
+                )
+            }
+        );
+        System.assert(!response.Success, 'Should have failed: '+JSON.serialize(response));
+
+        response = SlateApplications.create(
+            new List<hed__Application__c> {
+                new hed__Application__c(
+                    
+                )
+            }
+        );
+        System.assert(!response.Success, 'Should have failed: '+JSON.serialize(response));
+
+        response = SlateApplications.create(
+            new List<hed__Application__c> {
+                new hed__Application__c(
+                    csuoee__Slate_ID__c = 'S12345',
+                    hed__Applying_To__r = new Account(hed__School_Code__c = 'MJR-CONC-DEGR'),
+                    csuoee__Slate_Email1__c = 'newstudent@gmail.com',
+                    csuoee__Slate_Email2__c = 'newstudent@colostate.edu'
+                )
+            }
+        );
+        System.assert(!response.Success, 'Should have failed: '+JSON.serialize(response));
+
+        //And all the rest...
+        Lead lead = new Lead(FirstName = 'New2', LastName = 'Student2', Email = 'alt@gmail.com', Company = 'CSU TEST');
+        insert lead;
+
+        Account peAcct = new Account(Name = 'New3 Student3 PE Account', hed__School_Code__c = 'learn.colostate.edu.12345');
+        insert peAcct;
+        Contact student2 = new Contact(AccountId = peAcct.Id, FirstName = 'New3', LastName = 'Student3', Email = 'new3.student3@gmail.com');
+        insert student2;
+
+        response = SlateApplications.create(
+            new List<hed__Application__c> {
+                new hed__Application__c(
+                    csuoee__Slate_ID__c = 'S12345',
+                    hed__Applying_To__r = new Account(hed__School_Code__c = 'MJR-CONC-DEGR'),
+                    csuoee__Slate_Email1__c = 'newstudent@gmail.com',
+                    csuoee__Slate_Email2__c = 'newstudent@colostate.edu',
+                    hed__Application_JSON__c = '{"Name": "Student, New"}'
+                ),
+                new hed__Application__c(
+                    csuoee__Slate_ID__c = 'S123456',
+                    hed__Applying_To__r = new Account(hed__School_Code__c = 'MJR-CONC-DEGR'),
+                    csuoee__Slate_Email1__c = 'new2student2@gmail.com',
+                    csuoee__Slate_Email2__c = 'alt@gmail.com',
+                    hed__Application_JSON__c = '{"Name": "Student2, New2"}'
+                ),
+                new hed__Application__c(
+                    csuoee__Slate_ID__c = 'S1234567',
+                    hed__Applying_To__r = new Account(hed__School_Code__c = 'MJR-CONC-DEGR'),
+                    csuoee__Slate_Email1__c = 'new3.student3@gmail.com',
+                    hed__Application_JSON__c = '{"Name": "Student3, New3"}'
+                )
+            }
+        );
+        System.assert(response.Success, 'Error: '+JSON.serialize(response));
+
+        lead.hed__External_Id__c = 'wrongid';
+        update lead;
+        response = SlateApplications.create(
+            new List<hed__Application__c> {
+                new hed__Application__c(
+                    csuoee__Slate_ID__c = 'S123456',
+                    hed__Applying_To__r = new Account(hed__School_Code__c = 'MJR-CONC-DEGR'),
+                    csuoee__Slate_Email1__c = 'new2student2@gmail.com',
+                    csuoee__Slate_Email2__c = 'alt@gmail.com',
+                    hed__Application_JSON__c = '{"Name": "Student2, New2"}'
+                ),
+                new hed__Application__c(
+                    csuoee__Slate_ID__c = 'S123456',
+                    hed__Applying_To__r = new Account(hed__School_Code__c = 'MJR-CONC-DEGR'),
+                    csuoee__Slate_Email1__c = 'new2student2@gmail.com',
+                    csuoee__Slate_Email2__c = 'alt@gmail.com',
+                    hed__Application_JSON__c = '{"Name": "Student2, New2"}'
+                )
+            }
+        );
+        System.assert(!response.Success, 'Should have failed: '+JSON.serialize(response));
+        
+        response = SlateApplications.create(
+            new List<hed__Application__c> {
+                new hed__Application__c(
+                    csuoee__Slate_ID__c = 'S123456',
+                    hed__Applying_To__r = new Account(hed__School_Code__c = 'MJR-CONC-DEGR'),
+                    csuoee__Slate_Email1__c = 'new2student2@gmail.com',
+                    csuoee__Slate_Email2__c = 'alt@gmail.com',
+                    hed__Application_JSON__c = '{"Name": "Student2, New2"}',
+                    csuoee__Slate_Credits__c = 123468712643.12346123846
+                )
+            }
+        );
+        System.assert(!response.Success, 'Should have failed: '+JSON.serialize(response));
 
         Test.stopTest();
     }
