@@ -1,6 +1,7 @@
 @RestResource(urlMapping = '/credit/application/slate')
 global with sharing class SlateApplications {
 
+    //TODO: Tell the slate team to allow us to pass IDs so this entire function is no longer required.
     @HttpPost
     global static SlateResponse create(List<hed__Application__c> applications) {
         if(applications.isEmpty()) return new SlateResponse(true, 'No Applications submitted.');
