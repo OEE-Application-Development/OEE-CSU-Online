@@ -21,10 +21,10 @@ global with sharing class SlateApplications {
             emailList.add(application.csuoee__Slate_Email1__c);
             if(application.csuoee__Slate_Email2__c != null && application.csuoee__Slate_Email2__c != '') emailList.add(application.csuoee__Slate_Email2__c);
             if(application.csuoee__Slate_Email3__c != null && application.csuoee__Slate_Email3__c != '') emailList.add(application.csuoee__Slate_Email3__c);
-            emailMap.put(application.csuoee__Slate_ID__c, emailList);
+            emailMap.put('S'+application.csuoee__Slate_ID__c, emailList);
 
             // Application map
-            slateIdAppMap.put(application.csuoee__Slate_ID__c, application);
+            slateIdAppMap.put('S'+application.csuoee__Slate_ID__c, application);
         }
 
         // Search for Contacts
@@ -35,7 +35,6 @@ global with sharing class SlateApplications {
         List<Account> slateAccounts = new List<Account>();
         List<Contact> slateContacts = new List<Contact>();
         List<Account> slateMapping = new List<Account>();
-        Map<String, String> uuidMapping = new Map<String, String>();
 
         // Pick up & apply any contacts
         for(String slateId : contactResultMap.keySet()) {
@@ -47,28 +46,25 @@ global with sharing class SlateApplications {
         // What's left? Who do we have NO record of?
         for(hed__Application__c application : applications) {
             if(application.hed__Applicant__c == null) {
-                String frontDoorId = uuidMapping.get(application.csuoee__Slate_ID__c);
+                if(application.hed__Application_JSON__c == null) return new SlateResponse(false, 'Slate ID: '+application.csuoee__Slate_ID__c+' does not have any JSON to describe a student, and no student was found in Salesforce.');
+                
+                SlateApplication jsonApplication = (SlateApplication)JSON.deserialize(application.hed__Application_JSON__c, SlateApplication.class);
+                String[] nameSplit = jsonApplication.Name.split(',');
+                Account slateApplication = new Account(RecordTypeId = CreditHelpers.getSlateApplicationRecordType().Id, Name = (nameSplit[0] + ' Slate Application'), Parent = new Account(hed__School_Code__c = '126818'), hed__School_Code__c = 'S'+application.csuoee__Slate_ID__c);
+                slateAccounts.add(slateApplication);
+                String frontDoorId = System.UUID.randomUUID().toString();
+                Contact student = new Contact(
+                    csuoee__Front_Door_ID__c = frontDoorId, 
+                    FirstName = (nameSplit.size()>1)?nameSplit[1]:'', 
+                    LastName = nameSplit[0], 
+                    Account = new Account(hed__School_Code__c = 'S'+application.csuoee__Slate_ID__c), 
+                    Email = application.csuoee__Slate_Email1__c,
+                    csuoee__CSU_ID__c = jsonApplication.CSUID
+                );
+                slateContacts.add(student);
 
-                if(frontDoorId == null) {
-                    if(application.hed__Application_JSON__c == null) return new SlateResponse(false, 'Slate ID: '+application.csuoee__Slate_ID__c+' does not have any JSON to describe a student, and no student was found in Salesforce.');
-                    SlateApplication jsonApplication = (SlateApplication)JSON.deserialize(application.hed__Application_JSON__c, SlateApplication.class);
-                    String[] nameSplit = jsonApplication.Name.split(',');
-                    Account slateApplication = new Account(RecordTypeId = CreditHelpers.getSlateApplicationRecordType().Id, Name = (nameSplit[0] + ' Slate Application'), Parent = new Account(hed__School_Code__c = '126818'), hed__School_Code__c = application.csuoee__Slate_ID__c);
-                    slateAccounts.add(slateApplication);
-                    frontDoorId = System.UUID.randomUUID().toString();
-                    Contact student = new Contact(
-                        csuoee__Front_Door_ID__c = frontDoorId, 
-                        FirstName = (nameSplit.size()>1)?nameSplit[1]:'', 
-                        LastName = nameSplit[0], 
-                        Account = new Account(hed__School_Code__c = application.csuoee__Slate_ID__c), 
-                        Email = application.csuoee__Slate_Email1__c,
-                        csuoee__CSU_ID__c = jsonApplication.CSUID
-                    );
-                    slateContacts.add(student);
+                slateMapping.add(new Account(hed__School_Code__c = 'S'+application.csuoee__Slate_ID__c, hed__Primary_Contact__r = new Contact(csuoee__Front_Door_ID__c = frontDoorId)));
 
-                    slateMapping.add(new Account(hed__School_Code__c = application.csuoee__Slate_ID__c, hed__Primary_Contact__r = new Contact(csuoee__Front_Door_ID__c = frontDoorId)));
-                    uuidMapping.put(application.csuoee__Slate_ID__c, frontDoorId);
-                }
                 application.hed__Applicant__r = new Contact(csuoee__Front_Door_ID__c = frontDoorId);
             }
         }
