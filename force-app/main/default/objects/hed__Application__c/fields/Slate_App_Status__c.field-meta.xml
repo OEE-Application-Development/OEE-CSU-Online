@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Slate_App_Status__c</fullName>
+    <description>Application Status in Slate.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Application Status in Slate.</inlineHelpText>
+    <label>Slate App Status</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Decided</fullName>
+                <default>false</default>
+                <label>Decided</label>
+            </value>
+            <value>
+                <fullName>Awaiting Materials</fullName>
+                <default>false</default>
+                <label>Awaiting Materials</label>
+            </value>
+            <value>
+                <fullName>Awaiting Decision</fullName>
+                <default>false</default>
+                <label>Awaiting Decision</label>
+            </value>
+            <value>
+                <fullName>Awaiting Payment</fullName>
+                <default>false</default>
+                <label>Awaiting Payment</label>
+            </value>
+            <value>
+                <fullName>Awaiting Submission</fullName>
+                <default>false</default>
+                <label>Awaiting Submission</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
