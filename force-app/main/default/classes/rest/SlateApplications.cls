@@ -40,7 +40,7 @@ global with sharing class SlateApplications {
         for(String slateId : contactResultMap.keySet()) {
             Contact contact = contactResultMap.get(slateId);
 
-            slateIdAppMap.get(slateId).hed__Applicant__c = contact.Id;
+            slateIdAppMap.get('S'+slateId).hed__Applicant__c = contact.Id;
         }
 
         // What's left? Who do we have NO record of?
