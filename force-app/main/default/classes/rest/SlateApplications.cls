@@ -59,7 +59,8 @@ global with sharing class SlateApplications {
                     LastName = nameSplit[0], 
                     Account = new Account(hed__School_Code__c = 'S'+application.csuoee__Slate_ID__c), 
                     Email = application.csuoee__Slate_Email1__c,
-                    csuoee__CSU_ID__c = jsonApplication.CSUID
+                    csuoee__CSU_ID__c = jsonApplication.CSUID,
+                    csuoee__Last_Updated_Via__c = 'SlateApplicationImport'
                 );
                 slateContacts.add(student);
 
