@@ -80,7 +80,7 @@ global with sharing class SlateApplications {
                     application.hed__Applicant__r = new Contact(csuoee__Front_Door_ID__c = frontDoorId);
                     slateIdDeDupe.put('S'+application.csuoee__Slate_ID__c, student);
                 } else {
-                    application.hed__Applicant__r = new Contact(csuoee__Front_Door_ID__c = slateIdDeDupe.get(application.csuoee__Slate_ID__c).csuoee__Front_Door_ID__c);
+                    application.hed__Applicant__r = new Contact(csuoee__Front_Door_ID__c = slateIdDeDupe.get('S'+application.csuoee__Slate_ID__c).csuoee__Front_Door_ID__c);
                 }
             }
         }
