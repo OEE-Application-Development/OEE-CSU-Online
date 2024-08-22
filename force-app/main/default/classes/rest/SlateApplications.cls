@@ -47,7 +47,13 @@ global with sharing class SlateApplications {
         }
 
         Map<String, Contact> slateIdDeDupe = new Map<String, Contact>();
+        
         // What's left? Who do we have NO record of?
+        // Detect Previously created accounts
+        for(Contact previous : [SELECT Id, csuoee__Front_Door_ID__c, Account.hed__School_Code__c FROM Contact WHERE Account.hed__School_Code__c IN :slateIdAppMap.keyset()]) {
+            slateIdDeDupe.put(previous.Account.hed__School_Code__c, previous);
+        }
+
         for(hed__Application__c application : applications) {
             if(application.hed__Applicant__c == null) {
                 if(application.hed__Application_JSON__c == null) return new SlateResponse(false, 'Slate ID: '+application.csuoee__Slate_ID__c+' does not have any JSON to describe a student, and no student was found in Salesforce.');
