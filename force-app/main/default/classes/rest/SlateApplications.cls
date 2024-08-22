@@ -83,7 +83,7 @@ global with sharing class SlateApplications {
         }
 
         try {
-            upsert applications csuoee__Slate_ID__c;
+            upsert applications csuoee__Application_Reference__c;
         } catch(DmlException e) {
             return new SlateResponse(false, e.getMessage());
         }
