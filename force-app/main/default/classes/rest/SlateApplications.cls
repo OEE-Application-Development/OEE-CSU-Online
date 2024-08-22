@@ -58,7 +58,7 @@ global with sharing class SlateApplications {
             if(application.hed__Applicant__c == null) {
                 if(application.hed__Application_JSON__c == null) return new SlateResponse(false, 'Slate ID: '+application.csuoee__Slate_ID__c+' does not have any JSON to describe a student, and no student was found in Salesforce.');
                 
-                if(!slateIdDeDupe.containsKey(application.csuoee__Slate_ID__c)) {
+                if(!slateIdDeDupe.containsKey('S'+application.csuoee__Slate_ID__c)) {
                     SlateApplication jsonApplication = (SlateApplication)JSON.deserialize(application.hed__Application_JSON__c, SlateApplication.class);
                     String[] nameSplit = jsonApplication.Name.split(',');
                     Account slateApplication = new Account(RecordTypeId = CreditHelpers.getSlateApplicationRecordType().Id, Name = (nameSplit[0] + ' Slate Application'), Parent = new Account(hed__School_Code__c = '126818'), hed__School_Code__c = 'S'+application.csuoee__Slate_ID__c);
@@ -78,7 +78,7 @@ global with sharing class SlateApplications {
                     slateMapping.add(new Account(hed__School_Code__c = 'S'+application.csuoee__Slate_ID__c, hed__Primary_Contact__r = new Contact(csuoee__Front_Door_ID__c = frontDoorId)));
     
                     application.hed__Applicant__r = new Contact(csuoee__Front_Door_ID__c = frontDoorId);
-                    slateIdDeDupe.put(application.csuoee__Slate_ID__c, student);
+                    slateIdDeDupe.put('S'+application.csuoee__Slate_ID__c, student);
                 } else {
                     application.hed__Applicant__r = new Contact(csuoee__Front_Door_ID__c = slateIdDeDupe.get(application.csuoee__Slate_ID__c).csuoee__Front_Door_ID__c);
                 }
