@@ -40,6 +40,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>hed__Application__c.Slate_Email1__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>hed__Application__c.Slate_Email2__c</field>
         <readable>true</readable>
     </fieldPermissions>
