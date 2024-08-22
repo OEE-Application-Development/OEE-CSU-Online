@@ -25,6 +25,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>hed__Application__c.Application_Reference__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>hed__Application__c.Slate_App_Status__c</field>
         <readable>true</readable>
     </fieldPermissions>
