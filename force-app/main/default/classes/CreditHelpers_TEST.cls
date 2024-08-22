@@ -177,6 +177,15 @@ private class CreditHelpers_TEST {
         response = SlateApplications.create(
             new List<hed__Application__c> {
                 new hed__Application__c(
+                    csuoee__Slate_ID__c = 'S12345'
+                )
+            }
+        );
+        System.assert(!response.Success, 'Should have failed: '+JSON.serialize(response));
+
+        response = SlateApplications.create(
+            new List<hed__Application__c> {
+                new hed__Application__c(
                     csuoee__Slate_ID__c = 'S12345',
                     hed__Applying_To__r = new Account(hed__School_Code__c = 'MJR-CONC-DEGR'),
                     csuoee__Slate_Email1__c = 'newstudent@gmail.com',
@@ -254,22 +263,22 @@ private class CreditHelpers_TEST {
         response = SlateApplications.create(
             new List<hed__Application__c> {
                 new hed__Application__c(
-                    csuoee__Slate_ID__c = 'S123456',
+                    csuoee__Slate_ID__c = 'S999999',
                     hed__Applying_To__r = new Account(hed__School_Code__c = 'MJR-CONC-DEGR'),
-                    csuoee__Slate_Email1__c = 'new2student2@gmail.com',
+                    csuoee__Slate_Email1__c = 'new5student5@gmail.com',
                     csuoee__Slate_Email2__c = 'alt@gmail.com',
-                    hed__Application_JSON__c = '{"Name": "Student2, New2"}',
+                    hed__Application_JSON__c = '{"Name": "Shmo, Joe"}',
                     hed__Term__r = new hed__Term__c(csuoee__ODS_Term_ID__c = '202310'),
-                    csuoee__Application_Reference__c = 'S123456-202310'
+                    csuoee__Application_Reference__c = 'S999999-202310'
                 ),
                 new hed__Application__c(
-                    csuoee__Slate_ID__c = 'S123456',
+                    csuoee__Slate_ID__c = 'S999999',
                     hed__Applying_To__r = new Account(hed__School_Code__c = 'MJR-CONC-DEGR'),
-                    csuoee__Slate_Email1__c = 'new2student2@gmail.com',
+                    csuoee__Slate_Email1__c = 'new5student5@gmail.com',
                     csuoee__Slate_Email2__c = 'alt@gmail.com',
-                    hed__Application_JSON__c = '{"Name": "Student2, New2"}',
+                    hed__Application_JSON__c = '{"Name": "Shmo, Joe"}',
                     hed__Term__r = new hed__Term__c(csuoee__ODS_Term_ID__c = '202360'),
-                    csuoee__Application_Reference__c = 'S123456-202360'
+                    csuoee__Application_Reference__c = 'S999999-202360'
                 )
             }
         );
