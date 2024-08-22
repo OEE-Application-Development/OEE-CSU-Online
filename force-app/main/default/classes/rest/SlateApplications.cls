@@ -88,7 +88,7 @@ global with sharing class SlateApplications {
         if(!slateAccounts.isEmpty()) {
             try {
                 // Batch insert Slate Applications
-                insert slateAccounts;
+                upsert slateAccounts hed__School_Code__c;
                 insert slateContacts;
     
                 upsert slateMapping hed__School_Code__c;
