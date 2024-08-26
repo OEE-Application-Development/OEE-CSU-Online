@@ -41,7 +41,7 @@ global with sharing class SlateApplications {
 
         // Search for Contacts
         ContactEmailMatcher contactMatcher = new ContactEmailMatcher(emailMap, new List<String>{'hed__UniversityEmail__c', 'hed__WorkEmail__c', 'hed__AlternateEmail__c'}, new List<String>{'AccountId', 'Account.hed__School_Code__c'});
-        Map<String, Contact> contactResultMap = contactMatcher.match();
+        Map<String, SObject> contactResultMap = contactMatcher.match();
 
         // Start with Leads
         List<Account> slateAccounts = new List<Account>();
@@ -50,7 +50,7 @@ global with sharing class SlateApplications {
 
         // Pick up & apply any contacts
         for(String slateId : contactResultMap.keySet()) {
-            Contact contact = contactResultMap.get(slateId);
+            Contact contact = (Contact)contactResultMap.get(slateId);
 
             slateIdAppMap.get(slateId).hed__Applicant__c = contact.Id;
         }
