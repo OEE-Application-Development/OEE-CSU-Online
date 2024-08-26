@@ -29,10 +29,19 @@ global with sharing class SlateApplications {
             // Application map
             slateIdAppMap.put('S'+application.csuoee__Slate_ID__c, application);
         }
+        Map<String, Contact> slateIdDeDupe = new Map<String, Contact>();
+        // Detect Previously created accounts
+        for(Contact previous : [SELECT Id, csuoee__Front_Door_ID__c, Account.hed__School_Code__c FROM Contact WHERE Account.hed__School_Code__c IN :slateIdAppMap.keyset()]) {
+            // Map for SlateID match
+            slateIdDeDupe.put(previous.Account.hed__School_Code__c, previous);
+
+            // Remove from Contact Email Query - we already have them
+            emailMap.remove(previous.Account.hed__School_Code__c);
+        }
 
         // Search for Contacts
-        ContactEmailMatcher contactMatcher = new ContactEmailMatcher(emailMap, new List<String>{'hed__UniversityEmail__c', 'hed__WorkEmail__c', 'hed__AlternateEmail__c'}, new List<String>{'AccountId'});
-        Map<String, Contact> contactResultMap = contactMatcher.match();
+        ContactEmailMatcher contactMatcher = new ContactEmailMatcher(emailMap, new List<String>{'hed__UniversityEmail__c', 'hed__WorkEmail__c', 'hed__AlternateEmail__c'}, new List<String>{'AccountId', 'Account.hed__School_Code__c'});
+        Map<String, SObject> contactResultMap = contactMatcher.match();
 
         // Start with Leads
         List<Account> slateAccounts = new List<Account>();
@@ -41,19 +50,12 @@ global with sharing class SlateApplications {
 
         // Pick up & apply any contacts
         for(String slateId : contactResultMap.keySet()) {
-            Contact contact = contactResultMap.get(slateId);
+            Contact contact = (Contact)contactResultMap.get(slateId);
 
             slateIdAppMap.get(slateId).hed__Applicant__c = contact.Id;
         }
-
-        Map<String, Contact> slateIdDeDupe = new Map<String, Contact>();
         
         // What's left? Who do we have NO record of?
-        // Detect Previously created accounts
-        for(Contact previous : [SELECT Id, csuoee__Front_Door_ID__c, Account.hed__School_Code__c FROM Contact WHERE Account.hed__School_Code__c IN :slateIdAppMap.keyset()]) {
-            slateIdDeDupe.put(previous.Account.hed__School_Code__c, previous);
-        }
-
         for(hed__Application__c application : applications) {
             if(application.hed__Applicant__c == null) {
                 if(application.hed__Application_JSON__c == null) return new SlateResponse(false, 'Slate ID: '+application.csuoee__Slate_ID__c+' does not have any JSON to describe a student, and no student was found in Salesforce.');
