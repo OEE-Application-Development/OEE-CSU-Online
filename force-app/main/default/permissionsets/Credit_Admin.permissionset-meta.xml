@@ -476,7 +476,7 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>hed__Term__c.Academic_Year__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -523,6 +523,11 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>hed__Term__c.Sections_in_Term__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>hed__Term__c.Show_on_Appeals_Form__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
