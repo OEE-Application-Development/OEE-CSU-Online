@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Available_Online_Section_Count__c</fullName>
+    <description>Number of Online Sections that are marked as available for registration.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Number of Online Sections that are marked as available for registration.</inlineHelpText>
+    <label>Available Online Section Count</label>
+    <summaryFilterItems>
+        <field>hed__Course_Offering__c.Is_Available_for_Registration__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>hed__Course_Offering__c.Is_Online__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>hed__Course_Offering__c.hed__Course__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>
