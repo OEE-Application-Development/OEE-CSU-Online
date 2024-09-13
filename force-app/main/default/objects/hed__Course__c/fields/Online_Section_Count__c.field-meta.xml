@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Online_Section_Count__c</fullName>
+    <description>Count of the # of online offerings. Used to mark a course as &quot;available online&quot;.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Count of the # of online offerings. Used to mark a course as &quot;available online&quot;.</inlineHelpText>
+    <label>Online Section Count</label>
+    <summaryFilterItems>
+        <field>hed__Course_Offering__c.Campus_Code__c</field>
+        <operation>equals</operation>
+        <value>MC</value>
+    </summaryFilterItems>
+    <summaryForeignKey>hed__Course_Offering__c.hed__Course__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>
