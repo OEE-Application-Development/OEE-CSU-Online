@@ -15,7 +15,7 @@ private class CreditHelpers_TEST {
         Account uni = new Account(Name = 'CSU');
         insert uni;
 
-        hed__Term__c t = new hed__Term__c(Name = '2023SP', csuoee__ODS_Term_ID__c = '202310', hed__Account__c = uni.Id, RecordTypeId = ([SELECT Id FROM RecordType WHERE SobjectType = 'hed__Term__c' AND DeveloperName = 'Credit' LIMIT 1]).Id);
+        hed__Term__c t = new hed__Term__c(Name = '2023SP', csuoee__ODS_Term_ID__c = '202310', hed__Start_Date__c = Date.today(), hed__End_Date__c = Date.today(), hed__Account__c = uni.Id, RecordTypeId = ([SELECT Id FROM RecordType WHERE SobjectType = 'hed__Term__c' AND DeveloperName = 'Credit' LIMIT 1]).Id);
         insert t;
 
         hed__Term__c altTerm = new hed__Term__c(Name = '2023SM', csuoee__ODS_Term_ID__c = '202360', hed__Account__c = uni.Id, RecordTypeId = ([SELECT Id FROM RecordType WHERE SobjectType = 'hed__Term__c' AND DeveloperName = 'Credit' LIMIT 1]).Id);
@@ -30,8 +30,7 @@ private class CreditHelpers_TEST {
         hed__Course_Offering__c offering = new hed__Course_Offering__c(hed__Term__c = t.Id, hed__Course__c = course.Id, Name = 'CO 333 100', hed__Section_ID__c = '100', lms_hed__LMS_Reference_Code__c = '2023SP-CO-333-100', csuoee__Campus_Code__c = 'MC', csuoee__Banner_CRN__c = '12345');
         insert offering;
 
-        //TermReference-Enrollment-EID
-        hed__Program_Enrollment__c pe = new hed__Program_Enrollment__c(csuoee__Enrollment_Reference__c = '2023SP-MJR-CONC-DEGR-TEST');
+        hed__Program_Enrollment__c pe = new hed__Program_Enrollment__c(csuoee__Enrollment_Reference__c = '2023SP-MJR-CONC-DEGR-TEST', hed__Contact__c = c.Id, hed__Account__c = a.Id, csuoee__Term__c = t.Id);
         insert pe;
     }
 
@@ -298,6 +297,15 @@ private class CreditHelpers_TEST {
         );
         System.assert(!response.Success, 'Should have failed: '+JSON.serialize(response));
 
+        Test.stopTest();
+    }
+
+    @IsTest
+    private static void testProgramEnrollmentTriggers() {
+        Test.startTest();
+        hed__Program_Enrollment__c enrollment = [SELECT Id, hed__Start_Date__c, hed__End_Date__c FROM hed__Program_Enrollment__c WHERE csuoee__Enrollment_Reference__c = '2023SP-MJR-CONC-DEGR-TEST' LIMIT 1];
+
+        System.assert(enrollment.hed__Start_Date__c != null, 'Date not automatically set on enrollment.');
         Test.stopTest();
     }
     
