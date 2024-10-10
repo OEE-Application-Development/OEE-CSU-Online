@@ -299,5 +299,14 @@ private class CreditHelpers_TEST {
 
         Test.stopTest();
     }
+
+    @IsTest
+    private static void testProgramEnrollmentTriggers() {
+        Test.startTest();
+        hed__Program_Enrollment__c enrollment = [SELECT Id, hed__Start_Date__c, hed__End_Date__c FROM hed__Program_Enrollment__c WHERE csuoee__Enrollment_Reference__c = '2023SP-MJR-CONC-DEGR-TEST' LIMIT 1];
+
+        System.assert(enrollment.hed__Start_Date__c != null, 'Date not automatically set on enrollment.');
+        Test.stopTest();
+    }
     
 }
