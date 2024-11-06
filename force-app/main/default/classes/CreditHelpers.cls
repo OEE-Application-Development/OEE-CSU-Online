@@ -59,9 +59,20 @@ global with sharing class CreditHelpers {
         // Conditionally set empty values
         Map<Id, hed__Term__c> termMap = new Map<Id, hed__Term__c>([SELECT Id, hed__Start_Date__c, hed__End_Date__c FROM hed__Term__c WHERE Id IN :termsToSearch]);
         for(hed__Program_Enrollment__c enrollment : enrollments) {
-            if(enrollment.hed__Start_Date__c == null)enrollment.hed__Start_Date__c = termMap.get(enrollment.csuoee__Term__c).hed__Start_Date__c;
-            if(enrollment.hed__End_Date__c == null)enrollment.hed__End_Date__c = termMap.get(enrollment.csuoee__Term__c).hed__End_Date__c;
+            if(enrollment.hed__Start_Date__c == null && enrollment.csuoee__Term__c != null)enrollment.hed__Start_Date__c = termMap.get(enrollment.csuoee__Term__c).hed__Start_Date__c;
+            if(enrollment.hed__End_Date__c == null && enrollment.csuoee__Term__c != null)enrollment.hed__End_Date__c = termMap.get(enrollment.csuoee__Term__c).hed__End_Date__c;
         }
+    }
+
+    private static String orgNs = null;
+    private static String getOrgNs() {
+        if(orgNs == null) {
+            orgNs = ([SELECT NamespacePrefix FROM Organization].NamespacePrefix);
+            if(orgNs == 'csuoee') {
+                orgNs = orgNs + '__';
+            }
+        }
+        return orgNs;
     }
 
     global static void handleProgramEnrollmentAfterInsert(List<hed__Program_Enrollment__c> enrollments) {
@@ -72,12 +83,17 @@ global with sharing class CreditHelpers {
         }
 
         List<Contact> contactsToUpdate = new List<Contact>();
-        for(Contact contact : [SELECT Id, csuoee__Primary_Academic_Program__c FROM Contact WHERE Id IN :contactProgramMap.keySet()]) {
-            Id programId = contactProgramMap.get(contact.Id);
-            if(contact.csuoee__Primary_Academic_Program__c == null || contact.csuoee__Primary_Academic_Program__c != programId) {
-                contact.csuoee__Primary_Academic_Program__c = programId;
-                contactsToUpdate.add(contact);
+        try {
+            
+            for(Contact contact : (List<Contact>)Database.queryWithBinds('SELECT Id, '+getOrgNs()+'Primary_Academic_Program__c FROM Contact WHERE Id IN :contactIds', new Map<String, Object>{'contactIds' => contactProgramMap.keySet()}, AccessLevel.USER_MODE)) {
+                Id programId = contactProgramMap.get(contact.Id);
+                if(contact.get(getOrgNs()+'Primary_Academic_Program__c') == null || contact.get('Primary_Academic_Program__c') != programId) {
+                    contact.put(getOrgNs()+'Primary_Academic_Program__c', programId);
+                    contactsToUpdate.add(contact);
+                }
             }
+        } catch(QueryException qe) {
+            // This will always fail during builds because Primary_Academic_Program__c doesn't exist until EDA scripts are run, which only run on org setup, not build.
         }
 
         if(!contactsToUpdate.isEmpty())update contactsToUpdate;
