@@ -85,7 +85,7 @@ global with sharing class CreditHelpers {
         List<Contact> contactsToUpdate = new List<Contact>();
         try {
             
-            for(Contact contact : Database.queryWithBinds('SELECT Id, '+getOrgNs()+'Primary_Academic_Program__c FROM Contact WHERE Id IN :contactIds', new Map<String, Object>{'contactIds' => contactProgramMap.keySet()}, AccessLevel.USER_MODE)) {
+            for(Contact contact : (List<Contact>)Database.queryWithBinds('SELECT Id, '+getOrgNs()+'Primary_Academic_Program__c FROM Contact WHERE Id IN :contactIds', new Map<String, Object>{'contactIds' => contactProgramMap.keySet()}, AccessLevel.USER_MODE)) {
                 Id programId = contactProgramMap.get(contact.Id);
                 if(contact.get(getOrgNs()+'Primary_Academic_Program__c') == null || contact.get('Primary_Academic_Program__c') != programId) {
                     contact.put(getOrgNs()+'Primary_Academic_Program__c', programId);
