@@ -10,11 +10,6 @@
     </classAccesses>
     <fieldPermissions>
         <editable>true</editable>
-        <field>Contact.Primary_Academic_Program__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>true</editable>
         <field>Contact.hed__UniversityEmail__c</field>
         <readable>true</readable>
     </fieldPermissions>
