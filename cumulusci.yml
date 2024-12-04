@@ -34,6 +34,7 @@ tasks:
             record_types:
                 - record_type: Account.Educational_Institution
                 - record_type: Account.csumidp_hed__University_College
+                - record_type: Account.csuoee__University_Department
                 - record_type: Account.Banner_Account
                   default: true
                 - record_type: Account.lms_hed__LMS
