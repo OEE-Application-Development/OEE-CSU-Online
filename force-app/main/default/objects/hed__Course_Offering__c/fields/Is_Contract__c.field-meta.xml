@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Contract__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>True if this section is offering a contract course.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>True if this section is offering a contract course.</inlineHelpText>
+    <label>Is Contract</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
