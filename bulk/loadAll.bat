@@ -21,7 +21,7 @@ REM EDA/Canvas Objects Terms/Courses/Course Offerings/Enrollments
 call sf data import bulk -s hed__Term__c --file "bulk/data/CreditTerms.csv" -w 10 --column-delimiter=COMMA
 call sf apex run --file bulk/recordtypes/setCreditTermRecordType.apex
 call sf data import bulk -s hed__Course__c --file "bulk/data/CreditCourses.csv" -w 10 --column-delimiter=COMMA
-call sf apex run --file bulk/recordtypes/setCreditCourseRecordType.apexsf data export bulk --query-file "bulk/query/CreditStudentEnrollments.soql" --output-file "bulk/data/CreditStudentEnrollments.csv" -w 10
+call sf apex run --file bulk/recordtypes/setCreditCourseRecordType.apex
 call sf data import bulk -s csuoee__Part_of_Term__c --file "bulk/data/PartsOfTerm.csv" -w 10 --column-delimiter=COMMA
 call sf data import bulk -s hed__Course_Offering__c --file "bulk/data/CreditSections.csv" -w 10 --column-delimiter=COMMA
 call sf data import bulk -s hed__Course_Offering_Schedule__c --file "bulk/data/CreditSectionSchedules.csv" -w 10 --column-delimiter=COMMA
