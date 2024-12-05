@@ -82,5 +82,16 @@ global with sharing class CreditHelpers {
 
         if(!contactsToUpdate.isEmpty())update contactsToUpdate;
     }
+
+    /** Util **/
+    global static Boolean isCreditProgram(Account account) {
+        if(account.csuoee__Program_Level__c == 'UG') return true;
+        if(account.csuoee__Program_Level__c == 'GR') return true;
+        if(account.csuoee__Program_Level__c == 'PHD') return true;
+        if(account.csuoee__Program_Level__c == 'SI') return true;
+        if(account.csuoee__Program_Level__c == 'GZ') return true;
+        if(account.csuoee__Program_Level__c == 'PR') return true;
+        return false;
+    }
     
 }
