@@ -59,8 +59,8 @@ global with sharing class CreditHelpers {
         // Conditionally set empty values
         Map<Id, hed__Term__c> termMap = new Map<Id, hed__Term__c>([SELECT Id, hed__Start_Date__c, hed__End_Date__c FROM hed__Term__c WHERE Id IN :termsToSearch]);
         for(hed__Program_Enrollment__c enrollment : enrollments) {
-            if(enrollment.hed__Start_Date__c == null)enrollment.hed__Start_Date__c = termMap.get(enrollment.csuoee__Term__c).hed__Start_Date__c;
-            if(enrollment.hed__End_Date__c == null)enrollment.hed__End_Date__c = termMap.get(enrollment.csuoee__Term__c).hed__End_Date__c;
+            if(enrollment.hed__Start_Date__c == null && enrollment.csuoee__Term__c != null)enrollment.hed__Start_Date__c = termMap.get(enrollment.csuoee__Term__c).hed__Start_Date__c;
+            if(enrollment.hed__End_Date__c == null && enrollment.csuoee__Term__c != null)enrollment.hed__End_Date__c = termMap.get(enrollment.csuoee__Term__c).hed__End_Date__c;
         }
     }
 
