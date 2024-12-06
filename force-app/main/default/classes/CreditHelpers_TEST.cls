@@ -318,5 +318,18 @@ private class CreditHelpers_TEST {
 
         Test.stopTest();
     }
+
+    @IsTest
+    private static void testIsCreditProgram() {
+        Test.startTest();
+
+        // Not Credit
+        System.assert(!CreditHelpers.isCreditProgram([SELECT Id, csuoee__Program_Level__c FROM Account WHERE hed__School_Code__c = 'MJR-CONC-DEGR' LIMIT 1]));
+
+        // Credit
+        System.assert(CreditHelpers.isCreditProgram(new Account(csuoee__Program_Level__c = 'GR')));
+
+        Test.stopTest();
+    }
     
 }
