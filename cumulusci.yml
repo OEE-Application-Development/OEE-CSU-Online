@@ -32,6 +32,7 @@ tasks:
     update_admin_profile:
         options:
             record_types:
+                - record_type: Account.Academic_Program
                 - record_type: Account.Educational_Institution
                 - record_type: Account.csumidp_hed__University_College
                 - record_type: Account.University_Department

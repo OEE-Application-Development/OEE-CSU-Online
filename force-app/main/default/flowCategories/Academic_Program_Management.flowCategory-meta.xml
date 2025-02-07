@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowCategory xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Flows used to manage Academic Programs</description>
+    <flowCategoryItems>
+        <flow>Program_Plan_Management</flow>
+    </flowCategoryItems>
+    <masterLabel>Academic_Program_Management</masterLabel>
+</FlowCategory>
