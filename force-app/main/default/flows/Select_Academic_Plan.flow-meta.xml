@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <actionCalls>
-        <name>Get_Selected_Object</name>
-        <label>Get Selected Object</label>
+        <name>Are_there_any_existing_plans</name>
+        <label>Are there any existing plans?</label>
+        <locationX>314</locationX>
+        <locationY>458</locationY>
+        <actionName>IsCollectionEmpty</actionName>
+        <actionType>apex</actionType>
+        <connector>
+            <targetReference>Set_Defaults_for_New_Program</targetReference>
+        </connector>
+        <dataTypeMappings>
+            <typeName>T__sobjectLists</typeName>
+            <typeValue>hed__Program_Plan__c</typeValue>
+        </dataTypeMappings>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>sobjectLists</name>
+            <value>
+                <elementReference>Plans</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>IsCollectionEmpty</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Grab_Selected_Plan</name>
+        <label>Grab Selected Plan</label>
         <locationX>50</locationX>
         <locationY>458</locationY>
         <actionName>GetSObjectByIdFromCollection</actionName>
@@ -19,7 +43,7 @@
         <inputParameters>
             <name>id</name>
             <value>
-                <elementReference>Program_Plan_Choice.selectedChoiceValues</elementReference>
+                <elementReference>Select_Plan_to_Manage.selectedChoiceValues</elementReference>
             </value>
         </inputParameters>
         <inputParameters>
@@ -29,37 +53,69 @@
             </value>
         </inputParameters>
         <nameSegment>GetSObjectByIdFromCollection</nameSegment>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
+        <outputParameters>
+            <assignToReference>Plan</assignToReference>
+            <name>output</name>
+        </outputParameters>
         <versionSegment>1</versionSegment>
     </actionCalls>
     <apiVersion>62.0</apiVersion>
+    <assignments>
+        <name>Set_Defaults_for_New_Program</name>
+        <label>Set Defaults for New Program</label>
+        <locationX>314</locationX>
+        <locationY>566</locationY>
+        <assignmentItems>
+            <assignToReference>Plan.hed__Account__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Program.Id</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Plan.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>DefaultProgramPlanName</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Plan.hed__Is_Primary__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>IsPlansEmpty</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
     <decisions>
-        <description>If no plan selected - create a new plan with some defaults.</description>
-        <name>Selected_Program_or_New</name>
-        <label>Selected Plan or New?</label>
+        <name>Was_Plan_Selected</name>
+        <label>Was Plan Selected?</label>
         <locationX>182</locationX>
         <locationY>350</locationY>
-        <defaultConnectorLabel>No Plan</defaultConnectorLabel>
+        <defaultConnector>
+            <targetReference>Are_there_any_existing_plans</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Plan Not Selected</defaultConnectorLabel>
         <rules>
             <name>Plan_Selected</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Program_Plan_Choice.selectedChoiceValues</leftValueReference>
+                <leftValueReference>Select_Plan_to_Manage.selectedChoiceValues</leftValueReference>
                 <operator>IsBlank</operator>
                 <rightValue>
                     <booleanValue>false</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>Get_Selected_Object</targetReference>
+                <targetReference>Grab_Selected_Plan</targetReference>
             </connector>
             <label>Plan Selected</label>
         </rules>
     </decisions>
     <description>Flow to select a Program Plan given an Academic Program</description>
     <dynamicChoiceSets>
-        <description>Choice Set to wrap the Plan Collection.</description>
-        <name>Plan_Choice</name>
+        <description>Wraps the Plans Variable.</description>
+        <name>PlanChoices</name>
         <collectionReference>Plans</collectionReference>
         <dataType>String</dataType>
         <displayField>Name</displayField>
@@ -67,6 +123,12 @@
         <valueField>Id</valueField>
     </dynamicChoiceSets>
     <environments>Default</environments>
+    <formulas>
+        <description>AccountName Overview</description>
+        <name>DefaultProgramPlanName</name>
+        <dataType>String</dataType>
+        <expression>{!Program.Name}&amp;&apos; Overview&apos;</expression>
+    </formulas>
     <interviewLabel>Select Plan for {!Program.Name}</interviewLabel>
     <label>Select Academic Plan</label>
     <processMetadataValues>
@@ -89,14 +151,14 @@
     </processMetadataValues>
     <processType>Flow</processType>
     <recordLookups>
-        <description>Get Active Program Plans for Program.</description>
+        <description>Look up plans for program.</description>
         <name>Pull_Program_Plans</name>
         <label>Pull Program Plans</label>
         <locationX>182</locationX>
         <locationY>134</locationY>
-        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Choose_Program_Plan</targetReference>
+            <targetReference>Program_Plans_Display</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -113,29 +175,27 @@
         <sortField>hed__Is_Primary__c</sortField>
         <sortOrder>Desc</sortOrder>
     </recordLookups>
-    <runInMode>SystemModeWithSharing</runInMode>
     <screens>
-        <description>Screen to select one of the available Program Plans.</description>
-        <name>Choose_Program_Plan</name>
-        <label>Choose Program Plan</label>
+        <name>Program_Plans_Display</name>
+        <label>Program Plans Display</label>
         <locationX>182</locationX>
         <locationY>242</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>true</allowPause>
         <connector>
-            <targetReference>Selected_Program_or_New</targetReference>
+            <targetReference>Was_Plan_Selected</targetReference>
         </connector>
         <fields>
-            <name>Program_Plan_Choice</name>
-            <choiceReferences>Plan_Choice</choiceReferences>
+            <name>Select_Plan_to_Manage</name>
+            <choiceReferences>PlanChoices</choiceReferences>
             <extensionName>flowruntime:choiceLookup</extensionName>
-            <fieldText>Program Plan Choice</fieldText>
+            <fieldText>Select Plan to Manage</fieldText>
             <fieldType>ComponentChoice</fieldType>
             <inputParameters>
                 <name>placeholder</name>
                 <value>
-                    <stringValue>Select Plan or Create New by Selecting None</stringValue>
+                    <stringValue>Select a Plan or choose none to create new.</stringValue>
                 </value>
             </inputParameters>
             <inputsOnNextNavToAssocScrn>UseStoredValues</inputsOnNextNavToAssocScrn>
@@ -154,7 +214,17 @@
     </start>
     <status>Draft</status>
     <variables>
-        <description>The Program Plan selected to work on.</description>
+        <name>IsPlansEmpty</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>Are_there_any_existing_plans</elementReference>
+        </value>
+    </variables>
+    <variables>
+        <description>Selected Plan to return.</description>
         <name>Plan</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
@@ -163,7 +233,7 @@
         <objectType>hed__Program_Plan__c</objectType>
     </variables>
     <variables>
-        <description>The Program Plans to choose from.</description>
+        <description>Plans on the Program.</description>
         <name>Plans</name>
         <dataType>SObject</dataType>
         <isCollection>true</isCollection>
@@ -172,7 +242,7 @@
         <objectType>hed__Program_Plan__c</objectType>
     </variables>
     <variables>
-        <description>The Program to view Plans for.</description>
+        <description>The Program to select a plan for.</description>
         <name>Program</name>
         <dataType>SObject</dataType>
         <isCollection>false</isCollection>
