@@ -11,6 +11,9 @@ call sf apex run --file bulk/recordtypes/setCollegeRecordType.apex
 call sf data import bulk -s Account --file "bulk/data/DepartmentAccounts.csv" -w 10 --column-delimiter=COMMA
 call sf apex run --file bulk/recordtypes/setDepartmentRecordType.apex
 
+call sf data import bulk -s Account --file "bulk/data/AcademicPrograms.csv" -w 10 --column-delimiter=COMMA
+call sf apex run --file bulk/recordtypes/setAcademicProgramRecordType.apex
+
 REM Banner Account/Contact Pull -- Get Accounts / Link Contacts / Re-update primary Contact on Account
 call sf data import bulk -s Account --file "bulk/data/BannerAccounts.csv" -w 10 --column-delimiter=COMMA
 call sf apex run --file bulk/recordtypes/setBannerAccountRecordType.apex
